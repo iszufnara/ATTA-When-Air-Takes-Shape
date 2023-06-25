@@ -31,10 +31,11 @@ function sendCommand(command: string) {
 })
   .then(res => res.json());
 ```
+
 Then Call this function to send the command (example):
 ```
  <button onClick={() => sendCommand("1")}>1</button>
-``
+```
 
 The UI should map the Air Quality Index to a number between 0-9. (Note, perhaps this mapping should be moved to the server layer, and take in the AQI number instead)
 
