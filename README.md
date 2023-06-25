@@ -38,8 +38,6 @@ Then Call this function to send the command (example):
  <button onClick={() => sendAQI(50)}>1</button>
 ```
 
-The UI should map the Air Quality Index to a number between 0-9. (Note, perhaps this mapping should be moved to the server layer, and take in the AQI number instead)
-
 ## Directories
 
 Arduino ->  Arduino Code that listens to commands via the serial port and drives the structure's stepper motors
