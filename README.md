@@ -15,13 +15,13 @@ The node.js server has a very simple set of tasks:
 ## Interacting with the server Example
 
 Do a HTTP Post call to the following endpoint:
-http://localhost:3001/command?command=1
+http://localhost:3001/aqi?value=150
 
 
 In React Native, use the following 
 ```
-function sendCommand(command: string) {
-  fetch('http://localhost:3001/command?command='+command, {
+function sendAQI(aqi: number) {
+  fetch('http://localhost:3001/aqi?value='+aqi, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -30,11 +30,12 @@ function sendCommand(command: string) {
   },
 })
   .then(res => res.json());
+}
 ```
 
 Then Call this function to send the command (example):
 ```
- <button onClick={() => sendCommand("1")}>1</button>
+ <button onClick={() => sendAQI(50)}>1</button>
 ```
 
 The UI should map the Air Quality Index to a number between 0-9. (Note, perhaps this mapping should be moved to the server layer, and take in the AQI number instead)

@@ -53,4 +53,24 @@ app.post("/command", (req: any, res: any) => {
     res.end();
 });
 
+app.post("/aqi", (req: any, res: any) => {
+    const aqi = parseInt(req.query.value);
+    console.log("aqi", aqi);
+
+    if (aqi < 51) {
+        device.emit("0");
+    } else if (aqi < 101) {
+        device.emit("1");
+    } else if (aqi < 151) {
+        device.emit("2");
+    } else if (aqi < 201) {
+        device.emit("3");
+    } else if (aqi < 301) {
+        device.emit("4");
+    } else {
+        device.emit("5");
+    }
+    res.end();
+});
+
 export {};
