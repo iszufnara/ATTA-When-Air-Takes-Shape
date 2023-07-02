@@ -11,8 +11,8 @@
 #define stepPin_C A7
 
 // Rotation Left
-#define dirPin_RL A1
-#define stepPin_RL A2
+#define dirPin_RL A9
+#define stepPin_RL A8
 
 // Switches
 #define microSwitchWinding 4
@@ -26,12 +26,12 @@ bool interrupt = false;
 
 AccelStepper expansionSteppers(AccelStepper::DRIVER, stepPin_E, dirPin_E);
 AccelStepper contractionSteppers(AccelStepper::DRIVER, stepPin_C, dirPin_C);
-//AccelStepper rotationSteppers(AccelStepper::DRIVER, stepPin_RL, dirPin_RL);
+AccelStepper rotationSteppers(AccelStepper::DRIVER, stepPin_RL, dirPin_RL);
 
 #define TESTMODE 0  // 1 for test mode, 0 for normal mode
 
 #define MOTIONLENGTH 4
-// Motion arrays
+// Motion array for Expansion/Contraction
 // Pairs of integers ( Position, Speed)
 int motion[][MOTIONLENGTH]{
   { 10, maxSpeed/1.9, -10, -maxSpeed/1.9 },
@@ -43,7 +43,22 @@ int motion[][MOTIONLENGTH]{
   { 70, maxSpeed/1.3, -70, -maxSpeed/1.3 },
   { 80, maxSpeed/1.2, -80, -maxSpeed/1.2 },
   { 900, maxSpeed/1.1, -900, -maxSpeed/1.1 },
-  { 1000, maxSpeed, -1000, -maxSpeed }
+  { 1000, maxSpeed, 500, -maxSpeed }
+};
+
+// Motion array for Rotation
+// Pairs of integers ( Position, Speed)
+int rotationMotion[][MOTIONLENGTH]{
+  { 10, maxSpeed/1.9, -10, -maxSpeed/1.9 },
+  { 50, maxSpeed/1.8, -50, -maxSpeed/1.8 },
+  { 30, maxSpeed/1.7, -30, -maxSpeed/1.7 },
+  { 40, maxSpeed/1.6, -40, -maxSpeed/1.6 },
+  { 50, maxSpeed/1.5, -50, -maxSpeed/1.5 },
+  { 60, maxSpeed/1.4, -60, -maxSpeed/1.4 },
+  { 70, maxSpeed/1.3, -70, -maxSpeed/1.3 },
+  { 80, maxSpeed/1.2, -80, -maxSpeed/1.2 },
+  { 900, maxSpeed/1.1, -900, -maxSpeed/1.1 },
+  { 1000, maxSpeed, 500, -maxSpeed }
 };
 
 int currentMotionIndex = -1;
@@ -60,11 +75,11 @@ void setup() {
 
   expansionSteppers.setMaxSpeed(maxSpeed);
   contractionSteppers.setMaxSpeed(maxSpeed);
- // rotationSteppers.setMaxSpeed(maxSpeed);
+  rotationSteppers.setMaxSpeed(maxSpeed);
 
   expansionSteppers.setCurrentPosition(0);
   contractionSteppers.setCurrentPosition(0);
-  //rotationSteppers.setCurrentPosition(0);
+  rotationSteppers.setCurrentPosition(0);
   // Serial
   Serial.begin(19200);
 }
@@ -89,7 +104,7 @@ void RunMotion()
   //Serial.print("Distance:");
   //Serial.println(distance);
 
-  if (distance == 0)
+  if (distance * motion[currentMotionIndex][currentMotionStep + 1] <= 0)
   {
       // Loop around if we are at the end of the motion array
       if (currentMotionStep + 2 >= MOTIONLENGTH) {
@@ -103,13 +118,17 @@ void RunMotion()
       Serial.println(motion[currentMotionIndex][currentMotionStep]);
       contractionSteppers.moveTo(motion[currentMotionIndex][currentMotionStep]);
       expansionSteppers.moveTo(motion[currentMotionIndex][currentMotionStep]);
+      rotationSteppers.moveTo(rotationMotion[currentMotionIndex][currentMotionStep]);
   }
 
-  // Do the stepping
+
   contractionSteppers.run();
   contractionSteppers.setSpeed(motion[currentMotionIndex][currentMotionStep + 1]);
   expansionSteppers.run();
   expansionSteppers.setSpeed(motion[currentMotionIndex][currentMotionStep + 1]);
+  rotationSteppers.run();
+  rotationSteppers.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
+
 }
 
 
@@ -141,6 +160,7 @@ void PerformReset() {
 
   expansionSteppers.setCurrentPosition(0);
   contractionSteppers.setCurrentPosition(0);
+  rotationSteppers.setCurrentPosition(0);
 }
 
 // Check for any new commands
@@ -175,6 +195,7 @@ void HandleSwitches() {
 
     contractionSteppers.moveTo(-1000);
     expansionSteppers.moveTo(-1000);
+    rotationSteppers.moveTo(-1000);
 
     while ((contractionSteppers.isRunning() || expansionSteppers.isRunning()) && digitalRead(microSwitchUnWinding) == LOW) {
       contractionSteppers.run();
@@ -182,8 +203,8 @@ void HandleSwitches() {
       expansionSteppers.run();
       expansionSteppers.setSpeed(-speed);
       
-      //rotationSteppers.run();
-      //rotationSteppers.setSpeed(speed)
+      rotationSteppers.run();
+      rotationSteppers.setSpeed(-speed);
     }
   }
 
@@ -192,7 +213,7 @@ void HandleSwitches() {
 
     contractionSteppers.moveTo(1000);
     expansionSteppers.moveTo(1000);
-    //rotationSteppers.moveTo(1000);
+    rotationSteppers.moveTo(1000);
 
     while ((contractionSteppers.isRunning() || expansionSteppers.isRunning()) && digitalRead(microSwitchWinding) == LOW) {
       contractionSteppers.run();
@@ -200,8 +221,8 @@ void HandleSwitches() {
       expansionSteppers.run();
       expansionSteppers.setSpeed(speed);
 
-     // rotationSteppers.run();
-     // rotationSteppers.setSpeed(speed)
+     rotationSteppers.run();
+     rotationSteppers.setSpeed(speed);
     }
   }
 }
