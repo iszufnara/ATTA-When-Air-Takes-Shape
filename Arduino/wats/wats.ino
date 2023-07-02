@@ -10,33 +10,40 @@
 #define dirPin_C A6
 #define stepPin_C A7
 
+// Rotation Left
+#define dirPin_RL A1
+#define stepPin_RL A2
+
 // Switches
 #define microSwitchWinding 4
 #define microSwitchUnWinding 5
 
 const int stepsPerRevolution = 200;
 const int minSpeed = 200;
-const int maxSpeed = 1000;
+const int maxSpeed = 2000;
 int analogSpeed, speed;
 bool interrupt = false;
 
 AccelStepper expansionSteppers(AccelStepper::DRIVER, stepPin_E, dirPin_E);
 AccelStepper contractionSteppers(AccelStepper::DRIVER, stepPin_C, dirPin_C);
+//AccelStepper rotationSteppers(AccelStepper::DRIVER, stepPin_RL, dirPin_RL);
+
+#define TESTMODE 0  // 1 for test mode, 0 for normal mode
 
 #define MOTIONLENGTH 4
 // Motion arrays
 // Pairs of integers ( Position, Speed)
 int motion[][MOTIONLENGTH]{
-  { 10, 200, -10, -200 },
-  { 50, 200, -50, -200 },
-  { 30, 300, -30, -300 },
-  { 40, 300, -40, -300 },
-  { 50, 400, -50, -400 },
-  { 60, 400, -60, -400 },
-  { 70, 500, -70, -500 },
-  { 80, 500, -80, -500 },
-  { 90, 500, -90, -500 },
-  { 100, 500, -100, -500 }
+  { 10, maxSpeed/1.9, -10, -maxSpeed/1.9 },
+  { 50, maxSpeed/1.8, -50, -maxSpeed/1.8 },
+  { 30, maxSpeed/1.7, -30, -maxSpeed/1.7 },
+  { 40, maxSpeed/1.6, -40, -maxSpeed/1.6 },
+  { 50, maxSpeed/1.5, -50, -maxSpeed/1.5 },
+  { 60, maxSpeed/1.4, -60, -maxSpeed/1.4 },
+  { 70, maxSpeed/1.3, -70, -maxSpeed/1.3 },
+  { 80, maxSpeed/1.2, -80, -maxSpeed/1.2 },
+  { 900, maxSpeed/1.1, -900, -maxSpeed/1.1 },
+  { 1000, maxSpeed, -1000, -maxSpeed }
 };
 
 int currentMotionIndex = -1;
@@ -53,20 +60,23 @@ void setup() {
 
   expansionSteppers.setMaxSpeed(maxSpeed);
   contractionSteppers.setMaxSpeed(maxSpeed);
+ // rotationSteppers.setMaxSpeed(maxSpeed);
 
   expansionSteppers.setCurrentPosition(0);
   contractionSteppers.setCurrentPosition(0);
-  // Serial Conection
+  //rotationSteppers.setCurrentPosition(0);
+  // Serial
   Serial.begin(19200);
 }
 
 void loop() {
-  // Get any new commands
+  
   PollSerial();
   // Perform Motion routines
   RunMotion();
   // Switches used for Debug
   HandleSwitches();
+
 }
 
 void RunMotion()
@@ -76,8 +86,8 @@ void RunMotion()
     return;
 
   long distance = contractionSteppers.distanceToGo();
-  Serial.print("Distance:");
-  Serial.println(distance);
+  //Serial.print("Distance:");
+  //Serial.println(distance);
 
   if (distance == 0)
   {
@@ -161,7 +171,7 @@ void PollSerial() {
 void HandleSwitches() {
 
   if (digitalRead(microSwitchUnWinding) == LOW) {
-    speed = 500;
+    speed = 1000;
 
     contractionSteppers.moveTo(-1000);
     expansionSteppers.moveTo(-1000);
@@ -171,20 +181,27 @@ void HandleSwitches() {
       contractionSteppers.setSpeed(-speed);
       expansionSteppers.run();
       expansionSteppers.setSpeed(-speed);
+      
+      //rotationSteppers.run();
+      //rotationSteppers.setSpeed(speed)
     }
   }
 
   if (digitalRead(microSwitchWinding) == LOW) {
-    speed = 500;
+    speed = 1000;
 
     contractionSteppers.moveTo(1000);
     expansionSteppers.moveTo(1000);
+    //rotationSteppers.moveTo(1000);
 
     while ((contractionSteppers.isRunning() || expansionSteppers.isRunning()) && digitalRead(microSwitchWinding) == LOW) {
       contractionSteppers.run();
       contractionSteppers.setSpeed(speed);
       expansionSteppers.run();
       expansionSteppers.setSpeed(speed);
+
+     // rotationSteppers.run();
+     // rotationSteppers.setSpeed(speed)
     }
   }
 }
