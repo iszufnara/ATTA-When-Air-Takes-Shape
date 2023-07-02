@@ -28,7 +28,7 @@ AccelStepper expansionSteppers(AccelStepper::DRIVER, stepPin_E, dirPin_E);
 AccelStepper contractionSteppers(AccelStepper::DRIVER, stepPin_C, dirPin_C);
 AccelStepper rotationSteppers(AccelStepper::DRIVER, stepPin_RL, dirPin_RL);
 
-#define TESTMODE 0  // 1 for test mode, 0 for normal mode
+#define TESTMODE 1  // 1 for test mode, 0 for normal mode
 
 #define MOTIONLENGTH 4
 // Motion array for Expansion/Contraction
@@ -43,7 +43,7 @@ int motion[][MOTIONLENGTH]{
   { 70, maxSpeed/1.3, -70, -maxSpeed/1.3 },
   { 80, maxSpeed/1.2, -80, -maxSpeed/1.2 },
   { 900, maxSpeed/1.1, -900, -maxSpeed/1.1 },
-  { 1000, maxSpeed, 500, -maxSpeed }
+  { 1000, maxSpeed, -1000, -maxSpeed }
 };
 
 // Motion array for Rotation
@@ -101,8 +101,14 @@ void RunMotion()
     return;
 
   long distance = contractionSteppers.distanceToGo();
-  //Serial.print("Distance:");
-  //Serial.println(distance);
+  
+#if TESTMODE
+  Serial.print("Current Position: ");
+  Serial.print(contractionSteppers.currentPosition());
+  Serial.print("Distance:");
+  Serial.println(distance);
+  
+#endif 
 
   if (distance * motion[currentMotionIndex][currentMotionStep + 1] <= 0)
   {
