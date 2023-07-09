@@ -2,8 +2,13 @@
 #include <Wire.h>
 #include <AccelStepper.h>
 
+<<<<<<< HEAD
 #define TESTMODE 1  // 1 for test mode, 0 for normal mode
 #define TESTACCELERATION 1 // 1 for testing acceleration configuration, 0 for normal mode
+=======
+#define TESTMODE 0  // 1 for test mode, 0 for normal mode
+#define ROTATION_ENABLE 0
+>>>>>>> 313e75c00c20516879ef23aff9eeedf855acd0bc
 
 // Expansion steppers
 #define dirPin_E A4
@@ -47,12 +52,12 @@ AccelStepper rotationRightStepper(AccelStepper::DRIVER, stepPin_RotR, dirPin_Rot
 // Pairs of integers ( Position, Speed)
 // First index is the best motion
 int motion[][MOTIONLENGTH]{
-  { 500, maxSpeed/1.9, 1000, maxSpeed/1.9 },
-  { 400, maxSpeed/1.8, 900, maxSpeed/1.8 },
-  { 300, maxSpeed/1.6, 800, maxSpeed/1.6 },
-  { 200, maxSpeed/1.4, 700, maxSpeed/1.4 },
-  { 100, maxSpeed/1.2, 600, maxSpeed/1.2 },
-  { 50, maxSpeed, 500, maxSpeed }
+  { -1500, maxSpeed/1.9, -4000, maxSpeed/1.9 },
+  { -400, maxSpeed/1.8, -3900, maxSpeed/1.8 },
+  { -300, maxSpeed/1.6, -3800, maxSpeed/1.6 },
+  { -200, maxSpeed/1.4, -1700, maxSpeed/1.4 },
+  { -100, maxSpeed/1.2, -1600, maxSpeed/1.2 },
+  { -50, maxSpeed, -1500, maxSpeed }
 };
 
 // Motion array for Rotation
@@ -166,6 +171,7 @@ void RunMotion()
       rotationRightStepper.moveTo(rotationMotion[currentMotionIndex][currentMotionStep]);
   }
 
+<<<<<<< HEAD
   #if TESTACCELERATION
     if(position <= motion[currentMotionIndex][currentMotionStep]/2){
       currentAccelStep = 1
@@ -190,6 +196,22 @@ void RunMotion()
     rotationSteppers.run();
     rotationSteppers.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
   #endif
+=======
+
+
+
+  contractionSteppers.run();
+  contractionSteppers.setSpeed(direction * motion[currentMotionIndex][currentMotionStep + 1]);
+  expansionSteppers.run();
+  expansionSteppers.setSpeed(direction * motion[currentMotionIndex][currentMotionStep + 1]);
+#if ROTATION_ENABLE
+  rotationLeftStepper.run();
+  rotationLeftStepper.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
+  rotationRightStepper.run();
+  rotationRightStepper.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
+#endif //ROTATION_ENABLE
+
+>>>>>>> 313e75c00c20516879ef23aff9eeedf855acd0bc
 }
 
 
