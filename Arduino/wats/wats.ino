@@ -2,6 +2,8 @@
 #include <Wire.h>
 #include <AccelStepper.h>
 
+#define TESTMODE 1  // 1 for test mode, 0 for normal mode
+
 // Expansion steppers
 #define dirPin_E A4
 #define stepPin_E A5
@@ -18,6 +20,8 @@
 #define microSwitchWinding 4
 #define microSwitchUnWinding 5
 
+#define resetSwitch 6
+
 const int stepsPerRevolution = 200;
 const int minSpeed = 200;
 const int maxSpeed = 2000;
@@ -28,7 +32,7 @@ AccelStepper expansionSteppers(AccelStepper::DRIVER, stepPin_E, dirPin_E);
 AccelStepper contractionSteppers(AccelStepper::DRIVER, stepPin_C, dirPin_C);
 AccelStepper rotationSteppers(AccelStepper::DRIVER, stepPin_RL, dirPin_RL);
 
-#define TESTMODE 1  // 1 for test mode, 0 for normal mode
+
 
 #define MOTIONLENGTH 4
 // Motion array for Expansion/Contraction
@@ -72,6 +76,7 @@ void setup() {
 
   pinMode(microSwitchUnWinding, INPUT_PULLUP);
   pinMode(microSwitchWinding, INPUT_PULLUP);
+  pinMode(resetSwitch, INPUT_PULLUP);
 
   expansionSteppers.setMaxSpeed(maxSpeed);
   contractionSteppers.setMaxSpeed(maxSpeed);
@@ -143,6 +148,7 @@ void PerformHome() {
   currentMotionIndex = -1;
   currentMotionStep = 0;
  // TODO: Move the steppers to home position
+ 
 }
 
 // Set which motion index to run
@@ -152,7 +158,7 @@ void PerformMotion(int index) {
 }
 
 void PerformStop() {
-  Serial.write("Performing Stop");
+  Serial.write("Performing Stop\n");
   interrupt = true;
   currentMotionIndex = -1;
   currentMotionStep = 0;
@@ -160,6 +166,8 @@ void PerformStop() {
 
 // Hard Reset for tesing purposes
 void PerformReset() {
+  Serial.write("Perform Reset\n");
+
   interrupt = true;
   currentMotionIndex = -1;
   currentMotionStep = 0;
@@ -230,5 +238,10 @@ void HandleSwitches() {
      rotationSteppers.run();
      rotationSteppers.setSpeed(speed);
     }
+  }
+
+  if(digitalRead(resetSwitch)==LOW)
+  {
+    PerformReset();
   }
 }
