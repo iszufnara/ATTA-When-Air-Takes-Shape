@@ -44,12 +44,12 @@ AccelStepper rotationRightStepper(AccelStepper::DRIVER, stepPin_RotR, dirPin_Rot
 // Pairs of integers ( Position, Speed)
 // First index is the best motion
 int motion[][MOTIONLENGTH]{
-  { 500, maxSpeed/1.9, 1000, maxSpeed/1.9 },
-  { 400, maxSpeed/1.8, 900, maxSpeed/1.8 },
-  { 300, maxSpeed/1.6, 800, maxSpeed/1.6 },
-  { 200, maxSpeed/1.4, 700, maxSpeed/1.4 },
-  { 100, maxSpeed/1.2, 600, maxSpeed/1.2 },
-  { 50, maxSpeed, 500, maxSpeed }
+  { -1500, maxSpeed/1.9, -4000, maxSpeed/1.9 },
+  { -400, maxSpeed/1.8, -3900, maxSpeed/1.8 },
+  { -300, maxSpeed/1.6, -3800, maxSpeed/1.6 },
+  { -200, maxSpeed/1.4, -1700, maxSpeed/1.4 },
+  { -100, maxSpeed/1.2, -1600, maxSpeed/1.2 },
+  { -50, maxSpeed, -1500, maxSpeed }
 };
 
 // Motion array for Rotation
