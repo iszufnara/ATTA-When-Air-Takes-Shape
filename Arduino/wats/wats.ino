@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <AccelStepper.h>
-#include <elapsedMillis.h>
 
-#define TESTMODE 0  // 1 for test mode, 0 for normal mode
+#define TESTMODE 1  // 1 for test mode, 0 for normal mode
+#define TESTACCELERATION 1 // 1 for testing acceleration configuration, 0 for normal mode
 
 // Expansion steppers
 #define dirPin_E A4
@@ -71,25 +71,17 @@ int rotationMotion[][MOTIONLENGTH]{
 // First pair is for increasing speed
 // Second pair is for decreasing speed
 int accelerationMotion[][MOTIONLENGTH]{
-  {maxAcceleration / 10, 100, -maxAcceleration / 10, 1},
-  {maxAcceleration / 9, 200, -maxAcceleration / 9, 1},
-  {maxAcceleration / 8, 300, -maxAcceleration / 8, 1},
-  {maxAcceleration / 7, 400, -maxAcceleration / 7, 1},
-  {maxAcceleration / 6, 500, -maxAcceleration / 6, 1},
-  {maxAcceleration / 5, 600, -maxAcceleration / 5, 1},
-  {maxAcceleration / 4, 700, -maxAcceleration / 4, 1},
-  {maxAcceleration / 3, 800, -maxAcceleration / 3, 1},
-  {maxAcceleration / 2, 900, -maxAcceleration / 2, 1},
-  {maxAcceleration, 1000, -maxAcceleration, 1}
+  {maxAcceleration / 10, 0, -maxAcceleration / 10, 1},
+  {maxAcceleration / 8, 0, -maxAcceleration / 8, 1},
+  {maxAcceleration / 6, 0, -maxAcceleration / 6, 1},
+  {maxAcceleration / 4, 0, -maxAcceleration / 4, 1},
+  {maxAcceleration / 2, 0, -maxAcceleration / 2, 1},
+  {maxAcceleration / 1.5, 0, -maxAcceleration / 1.5, 1},
 };
 
 int currentMotionIndex = -1;
 int currentMotionStep = 0;
 int currentAccelStep = 0;
-
-elapsedMillis countTime;  // Track Seconds to trigger acceleration changes.
-                          // Setting Acceleration is a costly action because of
-                          // square root operation and should be done infrequently
 
 void setup() {
   pinMode(dirPin_E, OUTPUT);
@@ -132,6 +124,7 @@ void RunMotion()
     return;
 
   long distance = contractionSteppers.distanceToGo();
+  long position = contractionSteppers.currentPosition();
   
   int direction = 1;
   if (distance < 0)
@@ -141,14 +134,14 @@ void RunMotion()
 
 #if TESTMODE
   Serial.print("Current Position: ");
-  Serial.print(contractionSteppers.currentPosition());
+  Serial.print(position);
   Serial.print(" Distance:");
   Serial.print(distance);
   Serial.print(" Speed: ");
   Serial.println(direction * motion[currentMotionIndex][currentMotionStep + 1]);
   #if TESTACCELERATION
-      Serial.print("Time Elapsed： ");
-      Serial.println(countTime);
+      Serial.print("Acceleration: ");
+      Serial.println(contractionSteppers.acceleration());
   #endif
 #endif 
 
@@ -174,15 +167,21 @@ void RunMotion()
   }
 
   #if TESTACCELERATION
-    if (countTime >= 3000) {
-      contractionSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep]);
-      expansionSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep]);
-      rotationSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep]);
-      if (currentAccelStep++ == MOTIONLENGTH){currentAccelStep = 0;}
+    if(position <= motion[currentMotionIndex][currentMotionStep]/2){
+      currentAccelStep = 1
+      contractionSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep])
+      expansionSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep])
+    }else{
+      currentAccelStep = 3
+      contractionSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep])
+      expansionSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep])
     }
     contractionSteppers.run();
     expansionSteppers.run();
+
+    // Rotation Steppers separate
     rotationSteppers.run();
+    rotationSteppers.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
   #else
     contractionSteppers.run();
     contractionSteppers.setSpeed(motion[currentMotionIndex][currentMotionStep + 1]);
