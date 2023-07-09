@@ -3,7 +3,7 @@
 #include <AccelStepper.h>
 #include <elapsedMillis.h>
 
-#define TESTMODE 1  // 1 for test mode, 0 for normal mode
+#define TESTMODE 0  // 1 for test mode, 0 for normal mode
 
 // Expansion steppers
 #define dirPin_E A4
@@ -45,17 +45,14 @@ AccelStepper rotationRightStepper(AccelStepper::DRIVER, stepPin_RotR, dirPin_Rot
 #define MOTIONLENGTH 4
 // Motion array for Expansion/Contraction
 // Pairs of integers ( Position, Speed)
+// First index is the best motion
 int motion[][MOTIONLENGTH]{
-  { 1, maxSpeed/1.9, 100, maxSpeed/1.9 },
-  { 1, maxSpeed/1.8, 200, maxSpeed/1.8 },
-  { 1, maxSpeed/1.7, 300, maxSpeed/1.7 },
-  { 1, maxSpeed/1.6, 400, maxSpeed/1.6 },
-  { 1, maxSpeed/1.5, 500, maxSpeed/1.5 },
-  { 1, maxSpeed/1.4, 600, maxSpeed/1.4 },
-  { 1, maxSpeed/1.3, 700, maxSpeed/1.3 },
-  { 1, maxSpeed/1.2, 800, maxSpeed/1.2 },
-  { 1, maxSpeed/1.1, 900, maxSpeed/1.1 },
-  { 1, maxSpeed, 1000, maxSpeed }
+  { 500, maxSpeed/1.9, 1000, maxSpeed/1.9 },
+  { 400, maxSpeed/1.8, 900, maxSpeed/1.8 },
+  { 300, maxSpeed/1.6, 800, maxSpeed/1.6 },
+  { 200, maxSpeed/1.4, 700, maxSpeed/1.4 },
+  { 100, maxSpeed/1.2, 600, maxSpeed/1.2 },
+  { 50, maxSpeed, 500, maxSpeed }
 };
 
 // Motion array for Rotation
@@ -66,11 +63,7 @@ int rotationMotion[][MOTIONLENGTH]{
   { 30, maxSpeed/1.7, -30, -maxSpeed/1.7 },
   { 40, maxSpeed/1.6, -40, -maxSpeed/1.6 },
   { 50, maxSpeed/1.5, -50, -maxSpeed/1.5 },
-  { 60, maxSpeed/1.4, -60, -maxSpeed/1.4 },
-  { 70, maxSpeed/1.3, -70, -maxSpeed/1.3 },
-  { 80, maxSpeed/1.2, -80, -maxSpeed/1.2 },
-  { 900, maxSpeed/1.1, -900, -maxSpeed/1.1 },
-  { 1000, maxSpeed, 500, -maxSpeed }
+  { 60, maxSpeed/1.4, -60, -maxSpeed/1.4 }
 };
 
 // Acceleration Array for Expansion/Contraction
