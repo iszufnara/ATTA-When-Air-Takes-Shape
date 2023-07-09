@@ -3,6 +3,7 @@
 #include <AccelStepper.h>
 
 #define TESTMODE 0  // 1 for test mode, 0 for normal mode
+#define ROTATION_ENABLE 0
 
 // Expansion steppers
 #define dirPin_E A4
@@ -151,11 +152,12 @@ void RunMotion()
   contractionSteppers.setSpeed(direction * motion[currentMotionIndex][currentMotionStep + 1]);
   expansionSteppers.run();
   expansionSteppers.setSpeed(direction * motion[currentMotionIndex][currentMotionStep + 1]);
+#if ROTATION_ENABLE
   rotationLeftStepper.run();
   rotationLeftStepper.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
   rotationRightStepper.run();
   rotationRightStepper.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
-
+#endif //ROTATION_ENABLE
 
 }
 
