@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <AccelStepper.h>
+#include <elapsedMillis.h>
 
 // Expansion steppers
 #define dirPin_E A4
@@ -21,6 +22,7 @@
 const int stepsPerRevolution = 200;
 const int minSpeed = 200;
 const int maxSpeed = 2000;
+const int maxAcceleration = 100 // Conservative arbitrary Value requires testing
 int analogSpeed, speed;
 bool interrupt = false;
 
@@ -29,6 +31,7 @@ AccelStepper contractionSteppers(AccelStepper::DRIVER, stepPin_C, dirPin_C);
 AccelStepper rotationSteppers(AccelStepper::DRIVER, stepPin_RL, dirPin_RL);
 
 #define TESTMODE 1  // 1 for test mode, 0 for normal mode
+#define TESTACCELERATION 0 // 1 for testing new acceleration config, 0 for normal mode
 
 #define MOTIONLENGTH 4
 // Motion array for Expansion/Contraction
@@ -61,8 +64,27 @@ int rotationMotion[][MOTIONLENGTH]{
   { 1000, maxSpeed, 500, -maxSpeed }
 };
 
+// Acceleration Array for Expansion/Contraction
+int accelerationMotion[][MOTIONLENGTH]{
+    {maxAcceleration / 11, maxAcceleration / 10, maxAcceleration / 9, maxAcceleration / 10},
+    {maxAcceleration / 10, maxAcceleration / 9, maxAcceleration / 8, maxAcceleration / 9},
+    {maxAcceleration / 9, maxAcceleration / 8, maxAcceleration / 7, maxAcceleration / 8},
+    {maxAcceleration / 8, maxAcceleration / 7, maxAcceleration / 6, maxAcceleration / 7},
+    {maxAcceleration / 7, maxAcceleration / 6, maxAcceleration / 5, maxAcceleration / 6},
+    {maxAcceleration / 6, maxAcceleration / 5, maxAcceleration / 4, maxAcceleration / 5},
+    {maxAcceleration / 5, maxAcceleration / 4, maxAcceleration / 3, maxAcceleration / 4},
+    {maxAcceleration / 4, maxAcceleration / 3, maxAcceleration / 2, maxAcceleration / 3},
+    {maxAcceleration / 3, maxAcceleration / 2, maxAcceleration / 1.5, maxAcceleration / 2},
+    {maxAcceleration / 2, maxAcceleration / 1.5, maxAcceleration, maxAcceleration / 1.5}
+};
+
 int currentMotionIndex = -1;
 int currentMotionStep = 0;
+int currentAccelStep = 0;
+
+elapsedMillis countTime;  // Track Seconds to trigger acceleration changes.
+                          // Setting Acceleration is a costly action because of
+                          // square root operation and should be done infrequently
 
 void setup() {
   pinMode(dirPin_E, OUTPUT);
@@ -102,16 +124,18 @@ void RunMotion()
 
   long distance = contractionSteppers.distanceToGo();
   
-#if TESTMODE
-  Serial.print("Current Position: ");
-  Serial.print(contractionSteppers.currentPosition());
-  Serial.print("Distance:");
-  Serial.println(distance);
-  
-#endif 
+  #if TESTMODE
+    Serial.print("Current Position: ");
+    Serial.println(contractionSteppers.currentPosition());
+    Serial.print("Distance:");
+    Serial.println(distance);
+    #if TESTACCELERATION
+      Serial.print("Time Elapsed");
+      Serial.println(countTime);
+    #endif
+  #endif
 
-  if (distance * motion[currentMotionIndex][currentMotionStep + 1] <= 0)
-  {
+  if (distance * motion[currentMotionIndex][currentMotionStep + 1] <= 0) {
       // Loop around if we are at the end of the motion array
       if (currentMotionStep + 2 >= MOTIONLENGTH) {
         currentMotionStep = 0;
@@ -127,14 +151,24 @@ void RunMotion()
       rotationSteppers.moveTo(rotationMotion[currentMotionIndex][currentMotionStep]);
   }
 
-
-  contractionSteppers.run();
-  contractionSteppers.setSpeed(motion[currentMotionIndex][currentMotionStep + 1]);
-  expansionSteppers.run();
-  expansionSteppers.setSpeed(motion[currentMotionIndex][currentMotionStep + 1]);
-  rotationSteppers.run();
-  rotationSteppers.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
-
+  #if TESTACCELERATION
+    if (countTime >= 3000) {
+      contractionSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep])
+      expansionSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep])
+      rotationSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep])
+      if (currentAccelStep++ == MOTIONLENGTH){currentAccelStep = 0;}
+    }
+    contractionSteppers.run();
+    expansionSteppers.run();
+    rotationSteppers.run();
+  #else
+    contractionSteppers.run();
+    contractionSteppers.setSpeed(motion[currentMotionIndex][currentMotionStep + 1]);
+    expansionSteppers.run();
+    expansionSteppers.setSpeed(motion[currentMotionIndex][currentMotionStep + 1]);
+    rotationSteppers.run();
+    rotationSteppers.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
+  #endif
 }
 
 
@@ -142,13 +176,15 @@ void RunMotion()
 void PerformHome() {
   currentMotionIndex = -1;
   currentMotionStep = 0;
- // TODO: Move the steppers to home position
+  currentAccelStep = 0;
+  // TODO: Move the steppers to home position
 }
 
 // Set which motion index to run
 void PerformMotion(int index) {
   currentMotionIndex = index;
   currentMotionStep = 0;
+  currentAccelStep = 0;
 }
 
 void PerformStop() {
@@ -156,6 +192,7 @@ void PerformStop() {
   interrupt = true;
   currentMotionIndex = -1;
   currentMotionStep = 0;
+  currentAccelStep = 0;
 }
 
 // Hard Reset for tesing purposes
@@ -163,6 +200,7 @@ void PerformReset() {
   interrupt = true;
   currentMotionIndex = -1;
   currentMotionStep = 0;
+  currentAccelStep = 0;
 
   expansionSteppers.setCurrentPosition(0);
   contractionSteppers.setCurrentPosition(0);
