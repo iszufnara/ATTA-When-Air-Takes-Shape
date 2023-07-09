@@ -13,8 +13,12 @@
 #define stepPin_C A7
 
 // Rotation Left
-#define dirPin_RL A9
-#define stepPin_RL A8
+#define dirPin_RotL A9
+#define stepPin_RotL A8
+
+// Rotation Right
+#define dirPin_RotR A10
+#define stepPin_RotR A11
 
 // Switches
 #define microSwitchWinding 4
@@ -30,8 +34,8 @@ bool interrupt = false;
 
 AccelStepper expansionSteppers(AccelStepper::DRIVER, stepPin_E, dirPin_E);
 AccelStepper contractionSteppers(AccelStepper::DRIVER, stepPin_C, dirPin_C);
-AccelStepper rotationSteppers(AccelStepper::DRIVER, stepPin_RL, dirPin_RL);
-
+AccelStepper rotationLeftStepper(AccelStepper::DRIVER, stepPin_RotL, dirPin_RotL);
+AccelStepper rotationRightStepper(AccelStepper::DRIVER, stepPin_RotR, dirPin_RotR);
 
 
 #define MOTIONLENGTH 4
@@ -80,11 +84,14 @@ void setup() {
 
   expansionSteppers.setMaxSpeed(maxSpeed);
   contractionSteppers.setMaxSpeed(maxSpeed);
-  rotationSteppers.setMaxSpeed(maxSpeed);
+  rotationLeftStepper.setMaxSpeed(maxSpeed);
+  rotationRightStepper.setMaxSpeed(maxSpeed);
 
   expansionSteppers.setCurrentPosition(0);
   contractionSteppers.setCurrentPosition(0);
-  rotationSteppers.setCurrentPosition(0);
+  rotationLeftStepper.setCurrentPosition(0);
+  rotationRightStepper.setCurrentPosition(0);
+
   // Serial
   Serial.begin(19200);
 }
@@ -129,7 +136,8 @@ void RunMotion()
       Serial.println(motion[currentMotionIndex][currentMotionStep]);
       contractionSteppers.moveTo(motion[currentMotionIndex][currentMotionStep]);
       expansionSteppers.moveTo(motion[currentMotionIndex][currentMotionStep]);
-      rotationSteppers.moveTo(rotationMotion[currentMotionIndex][currentMotionStep]);
+      rotationLeftStepper.moveTo(rotationMotion[currentMotionIndex][currentMotionStep]);
+      rotationRightStepper.moveTo(rotationMotion[currentMotionIndex][currentMotionStep]);
   }
 
 
@@ -137,8 +145,11 @@ void RunMotion()
   contractionSteppers.setSpeed(motion[currentMotionIndex][currentMotionStep + 1]);
   expansionSteppers.run();
   expansionSteppers.setSpeed(motion[currentMotionIndex][currentMotionStep + 1]);
-  rotationSteppers.run();
-  rotationSteppers.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
+  rotationLeftStepper.run();
+  rotationLeftStepper.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
+  rotationRightStepper.run();
+  rotationRightStepper.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
+
 
 }
 
@@ -174,7 +185,8 @@ void PerformReset() {
 
   expansionSteppers.setCurrentPosition(0);
   contractionSteppers.setCurrentPosition(0);
-  rotationSteppers.setCurrentPosition(0);
+  rotationLeftStepper.setCurrentPosition(0);
+  rotationRightStepper.setCurrentPosition(0);
 }
 
 // Check for any new commands
@@ -209,7 +221,8 @@ void HandleSwitches() {
 
     contractionSteppers.moveTo(-1000);
     expansionSteppers.moveTo(-1000);
-    rotationSteppers.moveTo(-1000);
+    rotationLeftStepper.moveTo(-1000);
+    rotationRightStepper.moveTo(-1000);
 
     while ((contractionSteppers.isRunning() || expansionSteppers.isRunning()) && digitalRead(microSwitchUnWinding) == LOW) {
       contractionSteppers.run();
@@ -217,8 +230,11 @@ void HandleSwitches() {
       expansionSteppers.run();
       expansionSteppers.setSpeed(-speed);
       
-      rotationSteppers.run();
-      rotationSteppers.setSpeed(-speed);
+      rotationLeftStepper.run();
+      rotationLeftStepper.setSpeed(-speed);
+      rotationRightStepper.run();
+      rotationRightStepper.setSpeed(-speed);
+      
     }
   }
 
@@ -227,7 +243,8 @@ void HandleSwitches() {
 
     contractionSteppers.moveTo(1000);
     expansionSteppers.moveTo(1000);
-    rotationSteppers.moveTo(1000);
+    rotationLeftStepper.moveTo(1000);
+    rotationRightStepper.moveTo(1000);
 
     while ((contractionSteppers.isRunning() || expansionSteppers.isRunning()) && digitalRead(microSwitchWinding) == LOW) {
       contractionSteppers.run();
@@ -235,8 +252,10 @@ void HandleSwitches() {
       expansionSteppers.run();
       expansionSteppers.setSpeed(speed);
 
-     rotationSteppers.run();
-     rotationSteppers.setSpeed(speed);
+      rotationLeftStepper.run();
+      rotationLeftStepper.setSpeed(speed);
+      rotationRightStepper.run();
+      rotationRightStepper.setSpeed(speed);
     }
   }
 
