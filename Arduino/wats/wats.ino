@@ -31,7 +31,7 @@ AccelStepper contractionSteppers(AccelStepper::DRIVER, stepPin_C, dirPin_C);
 AccelStepper rotationSteppers(AccelStepper::DRIVER, stepPin_RL, dirPin_RL);
 
 #define TESTMODE 1  // 1 for test mode, 0 for normal mode
-#define TESTACCELERATION 0 // 1 for testing new acceleration config, 0 for normal mode
+#define TESTACCELERATION 1 // 1 for testing new acceleration config, 0 for normal mode
 
 #define MOTIONLENGTH 4
 // Motion array for Expansion/Contraction
@@ -66,16 +66,16 @@ int rotationMotion[][MOTIONLENGTH]{
 
 // Acceleration Array for Expansion/Contraction
 int accelerationMotion[][MOTIONLENGTH]{
-    {maxAcceleration / 11, maxAcceleration / 10, maxAcceleration / 9, maxAcceleration / 10},
-    {maxAcceleration / 10, maxAcceleration / 9, maxAcceleration / 8, maxAcceleration / 9},
-    {maxAcceleration / 9, maxAcceleration / 8, maxAcceleration / 7, maxAcceleration / 8},
-    {maxAcceleration / 8, maxAcceleration / 7, maxAcceleration / 6, maxAcceleration / 7},
-    {maxAcceleration / 7, maxAcceleration / 6, maxAcceleration / 5, maxAcceleration / 6},
-    {maxAcceleration / 6, maxAcceleration / 5, maxAcceleration / 4, maxAcceleration / 5},
-    {maxAcceleration / 5, maxAcceleration / 4, maxAcceleration / 3, maxAcceleration / 4},
-    {maxAcceleration / 4, maxAcceleration / 3, maxAcceleration / 2, maxAcceleration / 3},
-    {maxAcceleration / 3, maxAcceleration / 2, maxAcceleration / 1.5, maxAcceleration / 2},
-    {maxAcceleration / 2, maxAcceleration / 1.5, maxAcceleration, maxAcceleration / 1.5}
+  {maxAcceleration / 10, -maxAcceleration / 10, maxAcceleration / 9, -maxAcceleration/9},
+  {maxAcceleration / 9, -maxAcceleration / 9, maxAcceleration / 9, -maxAcceleration/9},
+  {maxAcceleration / 8, -maxAcceleration / 8, maxAcceleration / 9, -maxAcceleration/9},
+  {maxAcceleration / 7, -maxAcceleration / 7, maxAcceleration / 9, -maxAcceleration/9},
+  {maxAcceleration / 6, -maxAcceleration / 6, maxAcceleration / 9, -maxAcceleration/9},
+  {maxAcceleration / 5, -maxAcceleration / 5, maxAcceleration / 9, -maxAcceleration/9},
+  {maxAcceleration / 4, -maxAcceleration / 4, maxAcceleration / 9, -maxAcceleration/9},
+  {maxAcceleration / 3, -maxAcceleration / 3, maxAcceleration / 9, -maxAcceleration/9},
+  {maxAcceleration / 2, -maxAcceleration / 2, maxAcceleration / 9, -maxAcceleration/9},
+  {maxAcceleration / 1.5, -maxAcceleration / 1.5, maxAcceleration / 9, -maxAcceleration/9}
 };
 
 int currentMotionIndex = -1;
@@ -153,9 +153,9 @@ void RunMotion()
 
   #if TESTACCELERATION
     if (countTime >= 3000) {
-      contractionSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep])
-      expansionSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep])
-      rotationSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep])
+      contractionSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep])；
+      expansionSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep])；
+      rotationSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep])；
       if (currentAccelStep++ == MOTIONLENGTH){currentAccelStep = 0;}
     }
     contractionSteppers.run();
