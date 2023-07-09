@@ -42,16 +42,16 @@ AccelStepper rotationRightStepper(AccelStepper::DRIVER, stepPin_RotR, dirPin_Rot
 // Motion array for Expansion/Contraction
 // Pairs of integers ( Position, Speed)
 int motion[][MOTIONLENGTH]{
-  { 10, maxSpeed/1.9, -10, -maxSpeed/1.9 },
-  { 50, maxSpeed/1.8, -50, -maxSpeed/1.8 },
-  { 30, maxSpeed/1.7, -30, -maxSpeed/1.7 },
-  { 40, maxSpeed/1.6, -40, -maxSpeed/1.6 },
-  { 50, maxSpeed/1.5, -50, -maxSpeed/1.5 },
-  { 60, maxSpeed/1.4, -60, -maxSpeed/1.4 },
-  { 70, maxSpeed/1.3, -70, -maxSpeed/1.3 },
-  { 80, maxSpeed/1.2, -80, -maxSpeed/1.2 },
-  { 900, maxSpeed/1.1, -900, -maxSpeed/1.1 },
-  { 1000, maxSpeed, -1000, -maxSpeed }
+  { 1, maxSpeed/1.9, 100, maxSpeed/1.9 },
+  { 1, maxSpeed/1.8, 200, maxSpeed/1.8 },
+  { 1, maxSpeed/1.7, 300, maxSpeed/1.7 },
+  { 1, maxSpeed/1.6, 400, maxSpeed/1.6 },
+  { 1, maxSpeed/1.5, 500, maxSpeed/1.5 },
+  { 1, maxSpeed/1.4, 600, maxSpeed/1.4 },
+  { 1, maxSpeed/1.3, 700, maxSpeed/1.3 },
+  { 1, maxSpeed/1.2, 800, maxSpeed/1.2 },
+  { 1, maxSpeed/1.1, 900, maxSpeed/1.1 },
+  { 1, maxSpeed, 1000, maxSpeed }
 };
 
 // Motion array for Rotation
@@ -114,15 +114,23 @@ void RunMotion()
 
   long distance = contractionSteppers.distanceToGo();
   
+  int direction = 1;
+  if (distance < 0)
+  {
+    direction = -1;
+  }
+
 #if TESTMODE
   Serial.print("Current Position: ");
   Serial.print(contractionSteppers.currentPosition());
-  Serial.print("Distance:");
-  Serial.println(distance);
+  Serial.print(" Distance:");
+  Serial.print(distance);
+  Serial.print(" Speed: ");
+  Serial.println(direction * motion[currentMotionIndex][currentMotionStep + 1]);
   
 #endif 
 
-  if (distance * motion[currentMotionIndex][currentMotionStep + 1] <= 0)
+  if (direction * distance * motion[currentMotionIndex][currentMotionStep + 1] <= 0)
   {
       // Loop around if we are at the end of the motion array
       if (currentMotionStep + 2 >= MOTIONLENGTH) {
@@ -144,10 +152,12 @@ void RunMotion()
   }
 
 
+
+
   contractionSteppers.run();
-  contractionSteppers.setSpeed(motion[currentMotionIndex][currentMotionStep + 1]);
+  contractionSteppers.setSpeed(direction * motion[currentMotionIndex][currentMotionStep + 1]);
   expansionSteppers.run();
-  expansionSteppers.setSpeed(motion[currentMotionIndex][currentMotionStep + 1]);
+  expansionSteppers.setSpeed(direction * motion[currentMotionIndex][currentMotionStep + 1]);
   rotationLeftStepper.run();
   rotationLeftStepper.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
   rotationRightStepper.run();
