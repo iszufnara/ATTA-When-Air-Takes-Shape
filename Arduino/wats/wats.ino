@@ -132,8 +132,11 @@ void RunMotion()
       }
 
       // Set the new move to loction
+#if TESTMODE
       Serial.print("Moving to ");
       Serial.println(motion[currentMotionIndex][currentMotionStep]);
+#endif 
+
       contractionSteppers.moveTo(motion[currentMotionIndex][currentMotionStep]);
       expansionSteppers.moveTo(motion[currentMotionIndex][currentMotionStep]);
       rotationLeftStepper.moveTo(rotationMotion[currentMotionIndex][currentMotionStep]);
