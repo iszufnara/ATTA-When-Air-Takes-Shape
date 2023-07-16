@@ -2,13 +2,9 @@
 #include <Wire.h>
 #include <AccelStepper.h>
 
-<<<<<<< HEAD
 #define TESTMODE 1  // 1 for test mode, 0 for normal mode
 #define TESTACCELERATION 1 // 1 for testing acceleration configuration, 0 for normal mode
-=======
-#define TESTMODE 0  // 1 for test mode, 0 for normal mode
 #define ROTATION_ENABLE 0
->>>>>>> 313e75c00c20516879ef23aff9eeedf855acd0bc
 
 // Expansion steppers
 #define dirPin_E A4
@@ -44,8 +40,6 @@ AccelStepper contractionSteppers(AccelStepper::DRIVER, stepPin_C, dirPin_C);
 AccelStepper rotationLeftStepper(AccelStepper::DRIVER, stepPin_RotL, dirPin_RotL);
 AccelStepper rotationRightStepper(AccelStepper::DRIVER, stepPin_RotR, dirPin_RotR);
 
-#define TESTMODE 1  // 1 for test mode, 0 for normal mode
-#define TESTACCELERATION 1 // 1 for testing new acceleration config, 0 for normal mode
 
 #define MOTIONLENGTH 4
 // Motion array for Expansion/Contraction
@@ -171,7 +165,6 @@ void RunMotion()
       rotationRightStepper.moveTo(rotationMotion[currentMotionIndex][currentMotionStep]);
   }
 
-<<<<<<< HEAD
   #if TESTACCELERATION
     if(position <= motion[currentMotionIndex][currentMotionStep]/2){
       currentAccelStep = 1
@@ -184,19 +177,6 @@ void RunMotion()
     }
     contractionSteppers.run();
     expansionSteppers.run();
-
-    // Rotation Steppers separate
-    rotationSteppers.run();
-    rotationSteppers.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
-  #else
-    contractionSteppers.run();
-    contractionSteppers.setSpeed(motion[currentMotionIndex][currentMotionStep + 1]);
-    expansionSteppers.run();
-    expansionSteppers.setSpeed(motion[currentMotionIndex][currentMotionStep + 1]);
-    rotationSteppers.run();
-    rotationSteppers.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
-  #endif
-=======
 
 
 
@@ -211,7 +191,21 @@ void RunMotion()
   rotationRightStepper.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
 #endif //ROTATION_ENABLE
 
->>>>>>> 313e75c00c20516879ef23aff9eeedf855acd0bc
+    // Rotation Steppers separate
+    rotationSteppers.run();
+    rotationSteppers.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
+  #else
+    contractionSteppers.run();
+    contractionSteppers.setSpeed(motion[currentMotionIndex][currentMotionStep + 1]);
+    expansionSteppers.run();
+    expansionSteppers.setSpeed(motion[currentMotionIndex][currentMotionStep + 1]);
+  #if ROTATION_ENABLE
+    rotationLeftStepper.run();
+    rotationLeftStepper.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
+    rotationRightStepper.run();
+    rotationRightStepper.setSpeed(rotationMotion[currentMotionIndex][currentMotionStep + 1]);
+  #endif //ROTATION_ENABLE
+  #endif
 }
 
 
