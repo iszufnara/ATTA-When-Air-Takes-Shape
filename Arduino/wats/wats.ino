@@ -265,7 +265,7 @@ void PollSerial() {
         break;
       default:
         // Test to see if the command is a number
-        if (command >= '0' && command <= '9') {
+        if (command >= '0' && command <= '5') {
           PerformMotion(command - '0');
         }
     }
