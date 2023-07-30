@@ -176,15 +176,14 @@ void RunMotion()
       contractionSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep]);
       expansionSteppers.setAcceleration(accelerationMotion[currentMotionIndex][currentAccelStep]);
     }
-    contractionSteppers.run();
-    expansionSteppers.run();
+  #endif
+  contractionSteppers.run();
+  expansionSteppers.run();
 
   contractionSteppers.run();
   contractionSteppers.setSpeed(direction * motion[currentMotionIndex][currentMotionStep + 1]);
   expansionSteppers.run();
   expansionSteppers.setSpeed(direction * motion[currentMotionIndex][currentMotionStep + 1]);
-
-  #endif
 
   #if ROTATION_ENABLE
       rotationLeftStepper.run();
@@ -243,8 +242,6 @@ void PerformExpansion() {
   while (!interrupt) {
     Serial.print("Performing Contraction: ");
     Serial.println(contractionSteppers.currentPosition());
-    Serial.print("Count");
-    Serial.println(count);
     contractionSteppers.run();
     contractionSteppers.setSpeed(-speed);
     expansionSteppers.run();
@@ -254,7 +251,6 @@ void PerformExpansion() {
     rotationLeftStepper.setSpeed(-speed);
     rotationRightStepper.run();
     rotationRightStepper.setSpeed(-speed);
-    count++;
     if(Serial.available() > 0 && Serial.read() == 's'){
       Serial.println("Stopping contractions...");
       interrupt = true;
