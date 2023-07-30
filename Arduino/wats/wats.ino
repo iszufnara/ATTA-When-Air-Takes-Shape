@@ -233,9 +233,8 @@ void PerformReset() {
   rotationRightStepper.setCurrentPosition(0);
 }
 
-void PerformContraction() {
-  speed = 1000;
-
+void PerformExpansion() {
+  speed = maxSpeed;
   contractionSteppers.moveTo(-1000);
   expansionSteppers.moveTo(-1000);
   rotationLeftStepper.moveTo(-1000);
@@ -244,6 +243,8 @@ void PerformContraction() {
   while (!interrupt) {
     Serial.print("Performing Contraction: ");
     Serial.println(contractionSteppers.currentPosition());
+    Serial.print("Count");
+    Serial.println(count);
     contractionSteppers.run();
     contractionSteppers.setSpeed(-speed);
     expansionSteppers.run();
@@ -253,6 +254,7 @@ void PerformContraction() {
     rotationLeftStepper.setSpeed(-speed);
     rotationRightStepper.run();
     rotationRightStepper.setSpeed(-speed);
+    count++;
     if(Serial.available() > 0 && Serial.read() == 's'){
       Serial.println("Stopping contractions...");
       interrupt = true;
@@ -261,7 +263,7 @@ void PerformContraction() {
   interrupt = false;
 }
 
-void PerformExpansion(){
+void PerformContraction(){
   speed = 1000;
 
   contractionSteppers.moveTo(1000);
