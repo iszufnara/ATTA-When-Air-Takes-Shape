@@ -41,19 +41,19 @@ The only css files included at a high level are App.css and index.css
 */
 
 function App() {
-  
 
-function sendAQI(aqi: number) {
-  fetch('http://localhost:3001/aqi?value='+aqi, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
 
-  },
-})
-  .then(res => res.json());
-}
+  // function sendAQI(aqi: number) {
+  //   fetch('http://localhost:3001/aqi?value='+aqi, {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Accept': 'application/json',
+
+  //   },
+  // })
+  //   .then(res => res.json());
+  // }
 
   return (
     <Router>
@@ -71,8 +71,8 @@ function sendAQI(aqi: number) {
             <Route path="/about" element={<AboutUs />}>
             </Route>
           </Routes>
-          
-          <button onClick={() => sendAQI(55)}>1</button>
+
+          {/* <button onClick={() => sendAQI(55)}>1</button> */}
 
         </main>
       </div>
