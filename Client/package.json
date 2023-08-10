@@ -14,6 +14,7 @@
     "@types/react-dom": "^18.0.11",
     "gl-matrix": "^3.4.3",
     "mapbox-gl": "^2.15.0",
+    "netlify": "^13.1.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-google-maps": "^9.4.5",

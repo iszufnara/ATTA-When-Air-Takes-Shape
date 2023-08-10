@@ -27,7 +27,7 @@ function Map() {
   const dataHandler = new DataHandler();
   return (
     <>
-      <GoogleMap zoom={10} center={center} mapContainerClassName="map-route-container">
+      <GoogleMap zoom={8} center={center} mapContainerClassName="map-route-container">
         <MarkerF position={center} />
         {dataHandler.data.map((datapoint) => <MarkerF position={{ lat: datapoint.lat, lng: datapoint.lon }} />)}
       </GoogleMap>
