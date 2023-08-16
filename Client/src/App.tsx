@@ -2,7 +2,7 @@
 import './App.css';
 
 // Import statements
-import React from 'react';
+import { useState, createContext, Dispatch, SetStateAction } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { MapRoute } from './routes/MapRoute';
 import { AboutUs } from './routes/AboutUs';
@@ -10,6 +10,7 @@ import { DataRoute } from './routes/DataRoute';
 import NavBar from './components/Navbar';
 import SearchBar from './components/Searchbar';
 import { TakeAction } from './routes/TakeAction';
+import { SearchTermContext } from './contexts/searchTermContext';
 
 /* 
 Project Structure 
@@ -41,8 +42,6 @@ The only css files included at a high level are App.css and index.css
 */
 
 function App() {
-
-
   // function sendAQI(aqi: number) {
   //   fetch('http://localhost:3001/aqi?value='+aqi, {
   //   method: 'POST',
@@ -55,28 +54,31 @@ function App() {
   //   .then(res => res.json());
   // }
 
+  //Global searchTerm state
+  const [searchTerm, setSearchTerm] = useState("");
+
   return (
     <Router>
       <div>
         <main>
-          <SearchBar />
-          <NavBar />
-          <Routes>
-            <Route path="/" element={<MapRoute />}>
-            </Route>
-            <Route path="/data" element={<DataRoute />}>
-            </Route>
-            <Route path="/take-action" element={<TakeAction />}>
-            </Route>
-            <Route path="/about" element={<AboutUs />}>
-            </Route>
-          </Routes>
-
-          {/* <button onClick={() => sendAQI(55)}>1</button> */}
-
+          <SearchTermContext.Provider value={{ searchTerm, setSearchTerm }}>
+            <SearchBar />
+            <NavBar />
+            <Routes>
+              <Route path="/" element={<MapRoute />}>
+              </Route>
+              <Route path="/data" element={<DataRoute />}>
+              </Route>
+              <Route path="/take-action" element={<TakeAction />}>
+              </Route>
+              <Route path="/about" element={<AboutUs />}>
+              </Route>
+            </Routes>
+            {/* <button onClick={() => sendAQI(55)}>1</button> */}
+          </SearchTermContext.Provider>
         </main>
       </div>
-    </Router>
+    </Router >
   );
 }
 
