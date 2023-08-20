@@ -2,7 +2,7 @@
 import './App.css';
 
 // Import statements
-import { useState, createContext, Dispatch, SetStateAction } from 'react';
+import { useState, createContext, Dispatch, SetStateAction, useMemo, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { MapRoute } from './routes/MapRoute';
 import { AboutUs } from './routes/AboutUs';
@@ -10,7 +10,8 @@ import { DataRoute } from './routes/DataRoute';
 import NavBar from './components/Navbar';
 import SearchBar from './components/Searchbar';
 import { TakeAction } from './routes/TakeAction';
-import { SearchTermContext } from './contexts/searchTermContext';
+import { SearchInfo, SearchInfoContext } from './contexts/searchInfoContext';
+import { DataHandler, Country, City } from './model/DataHandler';
 
 /* 
 Project Structure 
@@ -54,18 +55,39 @@ function App() {
   //   .then(res => res.json());
   // }
 
-  //Global searchTerm state
-  const [searchTerm, setSearchTerm] = useState("");
+  /**
+   * global search info state, used to search for cities in SearchBar and MapRoute.
+   * will be passed down to other components through SearchInfoContext.Provider
+   */
+  const info: SearchInfo = {
+    term: "",
+    byCity: true,
+  };
+  const [searchInfo, setSearchInfo] = useState<SearchInfo>(info);
+
+  /**
+   * data handler, used to obtain data on cities and countries.
+   * created using useMemo hook to only initialize it once on the first render of the app.
+   */
+  const dataHandler = useMemo(() => new DataHandler(), []);
+
+  /**
+   * countries and cities states.
+   * will be passed down as props to SearchBar and MapRoute
+   */
+  const [cities, setCities] = useState<Array<City>>(dataHandler.getCities());
+  const [countries, setCountries] = useState<Array<Country>>(dataHandler.getCountries());
+
 
   return (
     <Router>
       <div>
         <main>
-          <SearchTermContext.Provider value={{ searchTerm, setSearchTerm }}>
-            <SearchBar />
+          <SearchInfoContext.Provider value={{ searchInfo, setSearchInfo }}>
+            <SearchBar {...{ cities, countries, setCities, setCountries }} />
             <NavBar />
             <Routes>
-              <Route path="/" element={<MapRoute />}>
+              <Route path="/" element={<MapRoute {...{ cities, countries, setCities, setCountries }} />}>
               </Route>
               <Route path="/data" element={<DataRoute />}>
               </Route>
@@ -75,7 +97,7 @@ function App() {
               </Route>
             </Routes>
             {/* <button onClick={() => sendAQI(55)}>1</button> */}
-          </SearchTermContext.Provider>
+          </SearchInfoContext.Provider>
         </main>
       </div>
     </Router >
