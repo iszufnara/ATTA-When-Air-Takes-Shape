@@ -1,34 +1,34 @@
-import { toHaveStyle } from "@testing-library/jest-dom/matchers";
-import raw_data from "../data/sample_offline_data.json";
-
 /**
  * DataHandler class 
  * Represents a data handler where all methods and fields related to data handling of data.json should
  * be created. 
  */
+import { data } from "../data/official_data";
 
 interface Station {
   name: string;
   time: string;
 }
-interface Datapoint {
+
+export interface Datapoint {
   lat: number,
   lon: number;
   uid: number,
   aqi: string,
   station: Station,
-  city: string | undefined,
-  country: string | undefined,
-  country_code: string | undefined,
-  economy: string | undefined,
-  code: string | undefined,
-  region: string | undefined,
-  income_group: string | number | undefined,
-  lending_category: string | number | undefined;
+  city: string,
+  country: string,
+  country_code: string,
+  economy: string,
+  code: string,
+  region: string,
+  income_group: string,
+  lending_category: string;
 };
 
-type Country = string | undefined;
-type City = string | undefined;
+export type Country = string;
+export type City = string;
+
 
 class DataHandler {
   /**
@@ -37,11 +37,12 @@ class DataHandler {
   private data: Array<Datapoint> = [];
   private countries: Array<Country> = [];
   private cities: Array<City> = [];
+
   /**
-   * 
+   * initializes data, countries, cities
    */
   constructor() {
-    raw_data.forEach((datapoint) => {
+    data.forEach((datapoint) => {
       const newDataPoint: Datapoint = {
         lat: datapoint.lat,
         lon: datapoint.lon,
@@ -90,27 +91,27 @@ class DataHandler {
     return this.data;
   }
 
-  /**
-   * 
-   * @param searchTerm 
-   * @returns 
-   */
-  public getCountryInfo(searchTerm: string): Datapoint | undefined {
-    return this.data.find(datapoint => {
-      datapoint.country?.toLowerCase() == searchTerm.toLowerCase();
-    });
-  } 
+  // /**
+  //  * 
+  //  * @param searchTerm 
+  //  * @returns 
+  //  */
+  // public getCountryInfo(searchTerm: string): Datapoint | undefined {
+  //   return this.data.find(datapoint => {
+  //     datapoint.country?.toLowerCase() == searchTerm.toLowerCase();
+  //   });
+  // } 
 
-  /**
-   * 
-   * @param searchTerm 
-   * @returns 
-   */
-  public getInfoBasedOnCity(searchTerm:string) : Datapoint | undefined {
-    return this.data.find(datapoint => {
-      datapoint.country?.toLowerCase() == searchTerm.toLowerCase();
-    })
-  }
+  //   /**
+  //    * 
+  //    * @param searchTerm 
+  //    * @returns 
+  //    */
+  //   public getInfoBasedOnCity(searchTerm:string) : Datapoint | undefined {
+  //     return this.data.find(datapoint => {
+  //       datapoint.country?.toLowerCase() == searchTerm.toLowerCase();
+  //     })
+  //   }
 }
 
 export { DataHandler };
