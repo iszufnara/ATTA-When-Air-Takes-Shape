@@ -1,0 +1,25 @@
+
+@import "../../styling/App.scss";
+
+.searchbar-container {
+  display: flex;
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+
+  input {
+    width: 100%;
+    border: none;
+    font-family: $project-font;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    opacity: 0.6;
+    color: #000;
+
+    &:focus {
+      outline: none
+    }
+  }
+}

@@ -1,0 +1,99 @@
+@import "../../styling/breakpoints.scss";
+@import "../../styling/App.scss";
+
+//variables
+$margin-size: 7px;
+
+// css outside of media queries applies to screen size of width between [375px, 425px)
+.map-filter-container {
+  background-color: white;
+  height: 250px;
+  width: 150px;
+  position: absolute;
+  top: 250px;
+  left: 170px;
+  z-index: 1;
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  opacity: 0.8;
+
+  @include media('<m-phone') {
+    left: 130px;
+    width: 150px;
+  }
+
+  ;
+
+  @include media('>=l-phone') {
+    left: 200px;
+    width: 170px
+  }
+
+  ;
+
+  @include media('>500px') {
+    left: 280px;
+    top: 250px
+  }
+
+  ;
+
+  @include media('>600px') {
+    left: 350px;
+    width: 200px;
+    height: 300px
+  }
+
+  ;
+
+  @include media('>700px') {
+    left: 450px;
+  }
+
+  @include media('>800px') {
+    left: 500px;
+  }
+
+  @include media('>900px') {
+    left: 600px;
+  }
+
+  @include media('>1100px') {
+    left: 700px;
+  }
+
+  @include media('>1200px') {
+    left: 800px;
+  }
+
+
+
+
+}
+
+.line {
+  border-bottom: 1px solid black;
+  opacity: 0.2;
+  background: #000;
+  margin-left: $margin-size;
+  margin-right: $margin-size;
+}
+
+.recommended-cities {
+  justify-content: center;
+  margin-left: $margin-size;
+  margin-right: $margin-size;
+  height: 190px;
+}
+
+.text-cities {
+  font-family: $project-font;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  opacity: 0.8;
+  margin-top: 5px;
+}

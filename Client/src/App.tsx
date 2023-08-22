@@ -1,5 +1,5 @@
 //styles import 
-import './App.css';
+import './styling/App.scss';
 
 // Import statements
 import { useState, createContext, Dispatch, SetStateAction, useMemo, useEffect } from 'react';
@@ -12,6 +12,8 @@ import SearchBar from './components/Searchbar';
 import { TakeAction } from './routes/TakeAction';
 import { SearchInfo, SearchInfoContext } from './contexts/searchInfoContext';
 import { DataHandler, Country, City } from './model/DataHandler';
+import { WindowSize } from './model/interfaces';
+import { WindowContext } from './contexts/windowSizeContext';
 
 /* 
 Project Structure 
@@ -55,15 +57,6 @@ function App() {
   //   .then(res => res.json());
   // }
 
-  /**
-   * global search info state, used to search for cities in SearchBar and MapRoute.
-   * will be passed down to other components through SearchInfoContext.Provider
-   */
-  const info: SearchInfo = {
-    term: "",
-    byCity: true,
-  };
-  const [searchInfo, setSearchInfo] = useState<SearchInfo>(info);
 
   /**
    * data handler, used to obtain data on cities and countries.
@@ -72,32 +65,61 @@ function App() {
   const dataHandler = useMemo(() => new DataHandler(), []);
 
   /**
-   * countries and cities states.
-   * will be passed down as props to SearchBar and MapRoute
+   * STATES
    */
+  const [searchInfo, setSearchInfo] = useState<SearchInfo>({ term: "", byCity: true });
   const [cities, setCities] = useState<Array<City>>(dataHandler.getCities());
   const [countries, setCountries] = useState<Array<Country>>(dataHandler.getCountries());
+  const [screenSize, setScreenSize] = useState(getCurrentDimension());
+
+  /**
+   * @returns current size of app window  
+   */
+  function getCurrentDimension(): WindowSize {
+    return {
+      width: window.innerWidth,
+      height: window.innerHeight
+    };
+  }
+
+  /** updates screen size state when called*/
+  const updateDimension = () => {
+    setScreenSize(getCurrentDimension());
+  };
+
+  /** appends event listener to window upon first render.
+   * callback updateDimension gets invoked when the event is dispatched.
+   * updateDimension updates screenSize state, causing a re-render and before appending a 
+   * new event listener, the old when gets removed due to the return function
+  */
+  useEffect(() => {
+    window.addEventListener('resize', updateDimension);
+    return (() => {
+      window.removeEventListener('resize', updateDimension);
+    });
+  }, []);
 
 
   return (
     <Router>
       <div>
         <main>
-          <SearchInfoContext.Provider value={{ searchInfo, setSearchInfo }}>
-            <SearchBar {...{ cities, countries, setCities, setCountries }} />
-            <NavBar />
-            <Routes>
-              <Route path="/" element={<MapRoute {...{ cities, countries, setCities, setCountries }} />}>
-              </Route>
-              <Route path="/data" element={<DataRoute />}>
-              </Route>
-              <Route path="/take-action" element={<TakeAction />}>
-              </Route>
-              <Route path="/about" element={<AboutUs />}>
-              </Route>
-            </Routes>
-            {/* <button onClick={() => sendAQI(55)}>1</button> */}
-          </SearchInfoContext.Provider>
+          <WindowContext.Provider value={{ windowObject: screenSize, setWindowObject: setScreenSize }}>
+            <SearchInfoContext.Provider value={{ searchInfo, setSearchInfo }}>
+              <NavBar />
+              <Routes>
+                <Route path="/" element={<MapRoute {...{ cities, countries, setCities, setCountries }} />}>
+                </Route>
+                <Route path="/data" element={<DataRoute />}>
+                </Route>
+                <Route path="/take-action" element={<TakeAction />}>
+                </Route>
+                <Route path="/about" element={<AboutUs />}>
+                </Route>
+              </Routes>
+              {/* <button onClick={() => sendAQI(55)}>1</button> */}
+            </SearchInfoContext.Provider>
+          </WindowContext.Provider>
         </main>
       </div>
     </Router >
