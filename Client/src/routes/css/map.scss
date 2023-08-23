@@ -1,13 +1,19 @@
+$map-height: 700px;
+
 .map-route-container {
   border: 1px solid black;
   margin: 10px;
-  height: 700px;
+  height: $map-height;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.map-container {
-  height: 500px;
+.google-map-container {
+  border: 1px solid red;
+  height: $map-height;
 }
 
 .sidebar {

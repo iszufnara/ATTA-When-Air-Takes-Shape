@@ -1,0 +1,168 @@
+@import "../../styling/breakpoints.scss";
+@import "../../styling/App.scss";
+
+//variables
+$margin-size: 7px;
+
+// css outside of media queries applies to screen size of width between [375px, 425px)
+.map-filter-container {
+  background-color: white;
+  height: 250px;
+  width: 150px;
+  position: absolute;
+  top: 250px;
+  left: 170px;
+  z-index: 1;
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  opacity: 0.9;
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  @include media('<m-phone') {
+    left: 130px;
+    width: 150px;
+  }
+
+  @include media('>=l-phone') {
+    left: 200px;
+    width: 170px
+  }
+
+  @include media('>500px') {
+    left: 280px;
+    top: 250px
+  }
+
+  @include media('>600px') {
+    left: 350px;
+    width: 200px;
+    height: 360px
+  }
+
+  @include media('>700px') {
+    left: 450px;
+  }
+
+  @include media('>800px') {
+    left: 500px;
+    width: 250px;
+  }
+
+  @include media('>900px') {
+    left: 600px;
+  }
+
+  @include media('>1000px') {}
+
+  @include media('>1200px') {
+    left: 900px;
+  }
+
+}
+
+.line {
+  border-bottom: 1px solid black;
+  opacity: 0.2;
+  background: #000;
+  margin-left: $margin-size;
+  margin-right: $margin-size;
+}
+
+.recommended-cities {
+  justify-content: center;
+  margin-left: $margin-size;
+  margin-right: $margin-size;
+  height: 230px;
+
+  @include media('>600px') {
+
+    height: 350px;
+  }
+}
+
+.text-cities {
+  font-family: $project-font;
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 24px;
+  opacity: 0.8;
+  margin-top: 5px;
+
+
+  @include media('>700px') {
+    font-size: 12px
+  }
+
+  @include media('>1000px') {
+    font-size: 14px
+  }
+
+}
+
+.page-numbers {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 28px;
+  gap: 2px;
+
+  button {
+    color: #1E4359;
+    font-weight: bold;
+    font-size: 8px;
+    display: flex;
+    width: 18px;
+    height: 18px;
+    justify-content: center;
+    align-items: center;
+    padding: 1px;
+    border-radius: 4px;
+    border: 2px solid #DFE3E8;
+    background: #FFF;
+
+    &:hover {
+      border: 2px solid #1E4359;
+    }
+
+    &.current-page {
+      border-radius: 4px;
+      border: 2px solid var(--temp-primary-color, #1E4359);
+      background: #FFF;
+    }
+
+    &.prev-button {
+      opacity: 0.8;
+      background: #919EAB;
+      border: 2px solid #919EAB
+    }
+
+    &.next-button {
+      border-radius: 4px;
+      border: 2px solid #DFE3E8;
+      background: #FFF;
+    }
+
+    @include media('>800px') {
+      width: 23px;
+      height: 23px;
+      font-size: 10px;
+    }
+  }
+
+  .prev-button:hover {
+    opacity: 1;
+    background: #1E4359;
+    border: 1px solid #1E4359
+  }
+
+  .next-button:hover {
+    background-color: #1E4359;
+    border: 1px solid #1E4359
+  }
+}
