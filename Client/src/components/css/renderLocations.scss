@@ -1,0 +1,35 @@
+@import "../../styling/App.scss";
+@import "../../styling/breakpoints.scss";
+
+.location-container {
+  border-radius: 6px;
+  background: var(--temp-secondary-color, rgba(154, 199, 217, 0.60));
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  height: 30px;
+  margin-bottom: 8px;
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  font-family: $project-font;
+  color: #000;
+  padding-left: 3px;
+
+  &:hover {
+    background-color: var(--temp-secondary-color, rgba(98, 180, 212, 0.6));;
+  }
+
+  @include media('>600px') {
+    height: 35px;
+
+    font-size: 12px;
+  }
+
+  @include media('>800px') {
+    height: 35px;
+
+    font-size: 14px;
+  }
+}

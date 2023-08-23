@@ -22,7 +22,7 @@ export const MapRoute: React.FC<CitiesCountriesPropsInterface> = ({ cities, coun
 
 // renders GoogleMap and Markers
 function Map({ cities, countries, setCities, setCountries }: CitiesCountriesPropsInterface) {
-  /** variables */
+  
 
   /** STATES */
   const { windowObject, setWindowObject } = useContext(WindowContext);
