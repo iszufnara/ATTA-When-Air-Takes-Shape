@@ -6,7 +6,7 @@ import { useState, createContext, Dispatch, SetStateAction, useMemo, useEffect }
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { MapRoute } from './routes/MapRoute';
 import { AboutUs } from './routes/AboutUs';
-import { DataRoute } from './routes/DataRoute';
+import { LandingPage } from './routes/LandingPage';
 import NavBar from './components/Navbar';
 import SearchBar from './components/Searchbar';
 import { TakeAction } from './routes/TakeAction';
@@ -102,15 +102,14 @@ function App() {
 
   return (
     <Router>
-      <div>
+      <div className="app-outer">
         <main>
           <WindowContext.Provider value={{ windowObject: screenSize, setWindowObject: setScreenSize }}>
             <SearchInfoContext.Provider value={{ searchInfo, setSearchInfo }}>
-              <NavBar />
               <Routes>
-                <Route path="/" element={<MapRoute {...{ cities, countries, setCities, setCountries }} />}>
+                <Route path="/map-route" element={<MapRoute {...{ cities, countries, setCities, setCountries }} />}>
                 </Route>
-                <Route path="/data" element={<DataRoute />}>
+                <Route path="/" element={<LandingPage />}>
                 </Route>
                 <Route path="/take-action" element={<TakeAction />}>
                 </Route>
