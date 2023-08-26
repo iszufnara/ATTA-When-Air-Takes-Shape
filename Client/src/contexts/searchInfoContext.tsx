@@ -1,15 +1,18 @@
 /**
  * Search Information Context file. 
  * creates SearchInfoContext that consists of a SearchInfoInterface.
- * SearchInfoInterface has two fields, a SearchInfo object and Dispatch function 
- * that sets the SearchInfo object.
  */
 import { createContext, useState, Dispatch, SetStateAction, ReactNode } from "react";
 
+export interface Center {
+  lat: number,
+  lng: number,
+}
 
 export interface SearchInfo {
-  term: string,
-  byCity: boolean;
+  term: string;
+  zoom: number,
+  center: Center;
 }
 
 export interface SearchInfoInterface {
@@ -20,7 +23,8 @@ export interface SearchInfoInterface {
 const defaultState = {
   searchInfo: {
     term: "",
-    byCity: false
+    zoom: 0,
+    center: { lat: 0, lng: 0 }
   },
   setSearchInfo: (searchInfo: SearchInfo) => { }
 } as SearchInfoInterface;
