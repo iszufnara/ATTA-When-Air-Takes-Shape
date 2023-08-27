@@ -1,0 +1,29 @@
+$map-height: 700px;
+
+.map-route-container {
+  border: 1px solid black;
+  margin: 10px;
+  height: $map-height;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.google-map-container {
+  border: 1px solid red;
+  height: $map-height;
+}
+
+.sidebar {
+  background-color: rgba(35, 55, 75, 0.9);
+  color: #fff;
+  padding: 6px 12px;
+  font-family: monospace;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  margin: 12px;
+  border-radius: 4px;
+}
