@@ -6,20 +6,20 @@
 #define ROTATION_ENABLE 0
 
 // Expansion steppers
-#define dirPin_E A4
-#define stepPin_E A5
+#define dirPin_E A6
+#define stepPin_E A7
 
 // Contraction steppers
-#define dirPin_C A6
-#define stepPin_C A7
+#define dirPin_C A8
+#define stepPin_C A9
 
 // Rotation Left
-#define dirPin_RotL A9
-#define stepPin_RotL A8
+#define dirPin_RotL A11
+#define stepPin_RotL A10
 
 // Rotation Right
-#define dirPin_RotR A10
-#define stepPin_RotR A11
+#define dirPin_RotR A14
+#define stepPin_RotR A15
 
 // Switches
 #define microSwitchWinding 4
