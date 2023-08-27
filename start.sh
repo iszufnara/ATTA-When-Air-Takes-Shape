@@ -1,6 +1,7 @@
 #!/bin/bash
 
 TASKKILL //F //IM node.exe
+TASKKILL //F //IM msedge.exe
 
 git checkout staging-branch
 git pull
