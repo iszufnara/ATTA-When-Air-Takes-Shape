@@ -15,4 +15,4 @@ npm install
 npm run build
 npm install -g serve
 serve -s build
-start msedge --kiosk --edge-kiosk-type="fullscreen" "localhost:3000"
+start msedge --kiosk --edge-kiosk-type="fullscreen" "http://localhost:3000"
