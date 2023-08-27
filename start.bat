@@ -12,6 +12,7 @@ git pull
 
 cd /d "%serverPath%"
 npm install 
+npm install -g ts-node
 ts-node server.ts &
 
 cd /d "%clientPath%"
