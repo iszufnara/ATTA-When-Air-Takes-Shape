@@ -14,5 +14,5 @@ cd "../Client" || exit 1
 npm install 
 npm run build
 npm install -g serve
-serve -s build
+serve -s build &
 start msedge --kiosk --edge-kiosk-type="fullscreen" "http://localhost:3000"
