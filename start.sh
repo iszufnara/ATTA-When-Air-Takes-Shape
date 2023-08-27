@@ -12,4 +12,7 @@ ts-node server.ts &> server.log &
 
 cd "../Client" || exit 1
 npm install 
-npm start &> client.log &
+npm run build
+npm install -g serve
+serve -s build
+start msedge --kiosk --edge-kiosk-type="fullscreen" "localhost:3000"
