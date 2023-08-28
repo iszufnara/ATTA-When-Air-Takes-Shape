@@ -151,34 +151,34 @@ export function MapFilter() {
 
 
   return (
-    // <Draggable bounds="parent">
-    <div className="map-filter-container">
-      <SearchBar />
-      <div className="line"></div>
-      <div className="recommended-cities">
-        <div className='text-cities'>Recommended Cities</div>
-        <RenderLocations locations={currentItems} />
+    <Draggable bounds="parent">
+      <div className="map-filter-container">
+        <SearchBar />
+        <div className="line"></div>
+        <div className="recommended-cities">
+          <div className='text-cities'>Recommended Cities</div>
+          <RenderLocations locations={currentItems} />
 
-        <div className="page-numbers">
-          <button className="prev-button" onClick={handlePrevBtn} disabled={(currentPage == pages[0] || pages.length == 0) ? true : false}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M11.3691 5.5575L7.93414 9L11.3691 12.4425L10.3116 13.5L5.81164 9L10.3116 4.5L11.3691 5.5575Z" fill="#C4CDD5" />
-            </svg>
-          </button>
+          <div className="page-numbers">
+            <button className="prev-button" onClick={handlePrevBtn} disabled={(currentPage == pages[0] || pages.length == 0) ? true : false}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M11.3691 5.5575L7.93414 9L11.3691 12.4425L10.3116 13.5L5.81164 9L10.3116 4.5L11.3691 5.5575Z" fill="#C4CDD5" />
+              </svg>
+            </button>
 
-          {windowDecrementBtn}
-          {renderPageNumbers}
-          {windowIncrementBtn}
+            {windowDecrementBtn}
+            {renderPageNumbers}
+            {windowIncrementBtn}
 
-          <button className="next-button" onClick={handleNextBtn} disabled={(currentPage == pages[pages.length - 1] || pages.length == 0) ? true : false}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M6.63086 5.5575L10.0659 9L6.63086 12.4425L7.68836 13.5L12.1884 9L7.68836 4.5L6.63086 5.5575Z" fill="#C4CDD5" />
-            </svg>
-          </button>
-        </div >
+            <button className="next-button" onClick={handleNextBtn} disabled={(currentPage == pages[pages.length - 1] || pages.length == 0) ? true : false}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M6.63086 5.5575L10.0659 9L6.63086 12.4425L7.68836 13.5L12.1884 9L7.68836 4.5L6.63086 5.5575Z" fill="#C4CDD5" />
+              </svg>
+            </button>
+          </div >
 
+        </div>
       </div>
-    </div>
-    // </Draggable>
+    </Draggable>
   );
 }

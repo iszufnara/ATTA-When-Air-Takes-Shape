@@ -14,7 +14,9 @@ export function LandingPage(props: LandingPageInterface) {
   return (
     <div className='landing-route-container'>
       <img src={rectange77} />
-      <SwipeCard />
+      <div className="outer-container-on-swipe">
+        <SwipeCard />
+      </div>
     </div>
   );
 }

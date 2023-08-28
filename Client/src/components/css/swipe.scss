@@ -49,6 +49,11 @@ $swipe-breakpoint-four: '>630px';
     left: 500px
   }
 
+  @include media('>1024px') {
+    position: static;
+    box-shadow: none;
+  }
+
 }
 
 .swipe-upper {
