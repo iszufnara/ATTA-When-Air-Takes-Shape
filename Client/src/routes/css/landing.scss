@@ -18,10 +18,11 @@
 .outer-container-on-swipe {
   width: 100vw;
 
-  @include media('>1024px') {
+
+  @include media('>900px') {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--temp-text-background, #F9F9F9);
+    background: yellow
   }
 }

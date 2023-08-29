@@ -30,7 +30,7 @@ function Map() {
   const { windowObject, setWindowObject } = useContext(WindowContext);
 
   /** reference to Google Map Object */
-  const mapRef = useRef(null);
+  const mapRef = useRef<google.maps.Map | null>(null);
 
   /** LOGIC */
   // updates center of map in response to window width limit of 600px
@@ -50,15 +50,12 @@ function Map() {
   ) : data.all_data.filter((datapoint) =>
     datapoint.city_country.toLocaleLowerCase().includes(searchInfo.term.toLocaleLowerCase()));
 
-  
+
 
   return (
     <div className='map-route-container'>
       {/* <p>{windowObject.width}</p> */}
       <MapFilter />
-      <div>
-        {searchInfo.zoom}
-      </div>
       <GoogleMap zoom={searchInfo.zoom} center={searchInfo.center} mapContainerClassName="google-map-container"
         onLoad={(map) => {
           mapRef.current = map;

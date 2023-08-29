@@ -14,7 +14,7 @@ export function RenderLocations(props: RenderLocationsProps) {
 
   /** LOGIC */
   const clickHandler = (datapoint: Datapoint) => {
-    setSearchInfo({ ...searchInfo, zoom: 3, center: { lat: datapoint.lat, lng: datapoint.lon } });
+    setSearchInfo({ ...searchInfo, zoom: 4, center: { lat: datapoint.lat, lng: datapoint.lon } });
   };
 
   return (
