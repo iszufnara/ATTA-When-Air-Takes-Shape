@@ -1,6 +1,6 @@
 // import statements 
 import "./css/map.scss";
-import { useState, useContext, useEffect } from 'react';
+import { useRef, useContext, useEffect } from 'react';
 import { useMemo } from 'react';
 import { GoogleMap, useLoadScript, MarkerF } from '@react-google-maps/api';
 import { Center, CitiesCountriesPropsInterface } from '../model/interfaces';
@@ -29,6 +29,9 @@ function Map() {
   const { searchInfo, setSearchInfo } = useContext(SearchInfoContext);
   const { windowObject, setWindowObject } = useContext(WindowContext);
 
+  /** reference to Google Map Object */
+  const mapRef = useRef(null);
+
   /** LOGIC */
   // updates center of map in response to window width limit of 600px
   useEffect(() => {
@@ -47,16 +50,28 @@ function Map() {
   ) : data.all_data.filter((datapoint) =>
     datapoint.city_country.toLocaleLowerCase().includes(searchInfo.term.toLocaleLowerCase()));
 
-
+  
 
   return (
     <div className='map-route-container'>
       {/* <p>{windowObject.width}</p> */}
       <MapFilter />
-      <GoogleMap zoom={searchInfo.zoom} center={searchInfo.center} mapContainerClassName="google-map-container">
+      <div>
+        {searchInfo.zoom}
+      </div>
+      <GoogleMap zoom={searchInfo.zoom} center={searchInfo.center} mapContainerClassName="google-map-container"
+        onLoad={(map) => {
+          mapRef.current = map;
+        }}
+        onZoomChanged={() => {
+          if (mapRef.current != null) {
+            setSearchInfo({ ...searchInfo, zoom: mapRef.current.getZoom() });
+          }
+          console.log(mapRef);
+        }}>
         {/* {<MarkerF position={center} />} */}
         {searchFiltered.map((datapoint) => <MarkerF position={{ lat: datapoint.lat, lng: datapoint.lon }} />)}
       </GoogleMap>
-    </div>
+    </div >
   );
 };
