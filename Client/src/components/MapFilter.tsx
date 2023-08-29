@@ -151,9 +151,9 @@ export function MapFilter() {
 
 
   return (
-    <Draggable bounds="parent">
+    // <Draggable bounds="parent">
       <div className="map-filter-container">
-        <SearchBar />
+        <SearchBar setCurrentPage={setCurrentPage} />
         <div className="line"></div>
         <div className="recommended-cities">
           <div className='text-cities'>Recommended Cities</div>
@@ -179,6 +179,6 @@ export function MapFilter() {
 
         </div>
       </div>
-    </Draggable>
+    // </Draggable>
   );
 }

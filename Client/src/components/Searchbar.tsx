@@ -9,7 +9,7 @@ import { CitiesCountriesPropsInterface } from "../model/interfaces";
 import { City, Country } from "../model/DataHandler";
 import { DataContext } from "../contexts/DataContext";
 
-function SearchBar() {
+function SearchBar(props) {
   const { searchInfo, setSearchInfo } = useContext(SearchInfoContext);
   const { data, setData } = useContext(DataContext);
 
@@ -55,6 +55,7 @@ function SearchBar() {
 
       <input ref={searchInput} type="text" placeholder="Search" onChange={(event) => {
         setSearchInfo({ ...searchInfo, term: event.target.value });
+        props.setCurrentPage(1);
       }} />
       {/* {<button onClick={() => setSearchInfo({ ...searchInfo, byCity: false })}>by country</button>} */}
       {/* {<button onClick={() => setSearchInfo({ ...searchInfo, byCity: true })}>by city</button>} */}
