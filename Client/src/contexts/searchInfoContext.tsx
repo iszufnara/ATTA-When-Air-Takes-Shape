@@ -11,7 +11,7 @@ export interface Center {
 
 export interface SearchInfo {
   term: string;
-  zoom: number,
+  zoom: number | undefined,
   center: Center;
 }
 

@@ -9,7 +9,11 @@ import { CitiesCountriesPropsInterface } from "../model/interfaces";
 import { City, Country } from "../model/DataHandler";
 import { DataContext } from "../contexts/DataContext";
 
-function SearchBar(props) {
+interface SearchBarProps {
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+}
+
+function SearchBar(props: SearchBarProps) {
   const { searchInfo, setSearchInfo } = useContext(SearchInfoContext);
   const { data, setData } = useContext(DataContext);
 
