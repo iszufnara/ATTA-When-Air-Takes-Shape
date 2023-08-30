@@ -71,9 +71,12 @@ function App() {
    */
   const [screenSize, setScreenSize] = useState(getCurrentDimension());
   const [searchInfo, setSearchInfo] = useState<SearchInfo>({
-    term: "", zoom: 3, center: {
+    term: "",
+    zoom: 3,
+    center: {
       lat: 45.765001, lng: -76.001027
-    }
+    },
+    activeMarker: null
   });
   const [data, setData] = useState<Data>({
     all_data: dataHandler.getData(),
