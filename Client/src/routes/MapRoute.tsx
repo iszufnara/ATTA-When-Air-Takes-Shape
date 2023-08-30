@@ -1,8 +1,8 @@
 // import statements 
 import "./css/map.scss";
-import { useRef, useContext, useEffect } from 'react';
+import { useRef, useContext, useEffect, useState } from 'react';
 import { useMemo } from 'react';
-import { GoogleMap, useLoadScript, MarkerF } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, MarkerF, InfoWindowF, InfoWindow } from '@react-google-maps/api';
 import { Center, CitiesCountriesPropsInterface } from '../model/interfaces';
 import { MapFilter } from '../components/MapFilter';
 import { WindowContext } from '../contexts/WindowSizeContext';
@@ -50,6 +50,17 @@ function Map() {
   ) : data.all_data.filter((datapoint) =>
     datapoint.city_country.toLocaleLowerCase().includes(searchInfo.term.toLocaleLowerCase()));
 
+  /**
+   * 
+   * @param marker is id of Marker object that has been selected by user
+   * @returns immediately if selected marker is already the active marker 
+   */
+  const handleActiveMarker = (marker: number) => {
+    if (marker === searchInfo.activeMarker) {
+      return;
+    }
+    setSearchInfo({ ...searchInfo, activeMarker: marker });
+  };
 
 
   return (
@@ -66,8 +77,22 @@ function Map() {
           }
           console.log(mapRef);
         }}>
-        {/* {<MarkerF position={center} />} */}
-        {searchFiltered.map((datapoint) => <MarkerF position={{ lat: datapoint.lat, lng: datapoint.lon }} />)}
+        {searchFiltered.map((datapoint) =>
+          <MarkerF key={datapoint.uid}
+            position={{ lat: datapoint.lat, lng: datapoint.lon }}
+            onClick={() => handleActiveMarker(datapoint.uid)}
+          >
+            {searchInfo.activeMarker === datapoint.uid ?
+              <InfoWindowF
+                position={{ lat: datapoint.lat, lng: datapoint.lon }}
+                onCloseClick={() => setSearchInfo({ ...searchInfo, activeMarker: null })} >
+                <div>
+                  <p>{datapoint.city_country}</p>
+                  <button>Select</button>
+                </div>
+              </InfoWindowF> : null}
+          </MarkerF>
+        )}
       </GoogleMap>
     </div >
   );
