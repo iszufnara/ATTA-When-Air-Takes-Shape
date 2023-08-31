@@ -15,8 +15,8 @@ function NavBar(props: navbarPropsInterface) {
     <nav className="navbar-container">
       <ul>
         Navbar
-        <li><Link to="/">Map</Link></li>
-        <li><Link to="/data">Data</Link></li>
+        <li><Link to="/map-route">Map</Link></li>
+        <li><Link to="/">Landing</Link></li>
         <li><Link to="/take-action">Take Action</Link></li>
         <li><Link to="/about">About</Link></li>
       </ul>

@@ -4,12 +4,18 @@ import "./css/searchbar.scss";
 // libraries import 
 import { useContext, useRef } from 'react';
 import react from 'react';
-import { SearchInfoContext } from "../contexts/searchInfoContext";
+import { SearchInfoContext } from "../contexts/SearchInfoContext";
 import { CitiesCountriesPropsInterface } from "../model/interfaces";
 import { City, Country } from "../model/DataHandler";
+import { DataContext } from "../contexts/DataContext";
 
-function SearchBar({ cities, countries }: CitiesCountriesPropsInterface) {
+interface SearchBarProps {
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+}
+
+function SearchBar(props: SearchBarProps) {
   const { searchInfo, setSearchInfo } = useContext(SearchInfoContext);
+  const { data, setData } = useContext(DataContext);
 
   const searchInput = useRef<HTMLInputElement>(null);
 
@@ -24,16 +30,16 @@ function SearchBar({ cities, countries }: CitiesCountriesPropsInterface) {
    * filterEmpty is an array of Country or City that has been filtered to exclude empty strings 
    * in the props states (countries or cities)
    */
-  const filterEmpty: Array<Country | City> = countries.filter((city: City | Country) => {
-    return city != "";
-  });
+  // const filterEmpty: Array<Country | City> = countries.filter((city: City | Country) => {
+  //   return city != "";
+  // });
   /**
    * searchFiltered is an array of Country or City that is dynamically filered as searchInfo.term state changes. 
    * searchInfo.term changes according to user input. 
    */
-  const searchFiltered = filterEmpty.filter((city) =>
-    city?.toLowerCase().includes(searchInfo.term.toLowerCase())
-  );
+  // const searchFiltered = filterEmpty.filter((city) =>
+  //   city?.toLowerCase().includes(searchInfo.term.toLowerCase())
+  // );
 
   return (
     <div className="searchbar-container">
@@ -53,6 +59,7 @@ function SearchBar({ cities, countries }: CitiesCountriesPropsInterface) {
 
       <input ref={searchInput} type="text" placeholder="Search" onChange={(event) => {
         setSearchInfo({ ...searchInfo, term: event.target.value });
+        props.setCurrentPage(1);
       }} />
       {/* {<button onClick={() => setSearchInfo({ ...searchInfo, byCity: false })}>by country</button>} */}
       {/* {<button onClick={() => setSearchInfo({ ...searchInfo, byCity: true })}>by city</button>} */}
