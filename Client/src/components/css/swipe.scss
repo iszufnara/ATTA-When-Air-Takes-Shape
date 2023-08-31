@@ -175,17 +175,16 @@ $swipe-breakpoint-four: ">630px";
   background: var(--temp-primary-color, #1e4359);
   border-radius: 20px;
   overflow: hidden;
+  display: flex;
   justify-content: center;
   align-items: center;
-  display: inline-flex;
 
   .swipe-button {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
-    width: 227px;
-    height: 36px;
-    background: var(--temp-primary-color, #1e4359);
+    justify-content: center;
+    width: 360px;
+    height: 50px;
     border: none;
     font-family: Montserrat;
     font-size: 12px;
@@ -194,15 +193,29 @@ $swipe-breakpoint-four: ">630px";
     line-height: 28px;
     outline: none;
 
-    p {
-      color: white;
+    .arrow {
+      width: 100%;
+      margin-right: 15px;
     }
 
-    @include media(">630px") {
+    svg {
+      height: 24px;
+      width: 24px;
+      fill: white;
+      margin-right: 8px; /* Adjust the spacing as needed */
+    }
+
+    p {
+      color: white;
+      margin: 0; /* Reset margin for the `<p>` element */
+      display: inline; /* Add display: inline to ensure the `<p>` element stays on the same line */
+    }
+
+    @media (min-width: 630px) {
       height: 40px;
     }
 
-    @include media(">710px") {
+    @media (min-width: 710px) {
       width: 240px;
       font-size: 18px;
     }

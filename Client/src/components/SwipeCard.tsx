@@ -1,10 +1,32 @@
 import * as React from "react";
 import "./css/swipe.scss";
 import logo from "../assets/atta1_PNG.webp";
+import { useNavigate } from "react-router-dom";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export interface SwipeCardProps {}
 
 export function SwipeCard(props: SwipeCardProps) {
+  const navigate = useNavigate();
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 2,
+    arrows: false,
+    swipeToSlide: true,
+    initialSlide: 2,
+    variableWidth: true,
+    onSwipe: () => {
+      setTimeout(() => {
+        navigate("/intro");
+      }, 500);
+    },
+  };
+
   return (
     <div className="swipe-container">
       <div className="swipe">
@@ -21,25 +43,54 @@ export function SwipeCard(props: SwipeCardProps) {
           </div>
           <div className="swipe-atta">Activism Through Technology and Art</div>
         </div>
+
         <div className="swipe-lower">
-          <button className="swipe-button">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <g filter="url(#filter0_d_1276_824)">
-                <path
-                  d="M15.5 5H11L16 12L11 19H15.5L20.5 12L15.5 5Z"
-                  fill="white"
-                />
-                <path d="M8.5 5H4L9 12L4 19H8.5L13.5 12L8.5 5Z" fill="white" />
-              </g>
-            </svg>
-            <p>Swipe to get Started</p>
-          </button>
+          <Slider {...settings} className="swipe-button">
+            <p>Welcome</p>
+
+            <div className="arrow">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <g filter="url(#filter0_d_1276_824)">
+                  <path
+                    d="M15.5 5H11L16 12L11 19H15.5L20.5 12L15.5 5Z"
+                    fill="white"
+                  />
+                  <path
+                    d="M8.5 5H4L9 12L4 19H8.5L13.5 12L8.5 5Z"
+                    fill="white"
+                  />
+                </g>
+              </svg>
+            </div>
+
+            <div className="arrow">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <g filter="url(#filter0_d_1276_824)">
+                  <path
+                    d="M15.5 5H11L16 12L11 19H15.5L20.5 12L15.5 5Z"
+                    fill="white"
+                  />
+                  <path
+                    d="M8.5 5H4L9 12L4 19H8.5L13.5 12L8.5 5Z"
+                    fill="white"
+                  />
+                </g>
+              </svg>
+            </div>
+            <p>Swipe to get started</p>
+          </Slider>
         </div>
       </div>
     </div>
