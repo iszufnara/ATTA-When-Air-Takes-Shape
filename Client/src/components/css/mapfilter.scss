@@ -10,7 +10,7 @@ $margin-size: 7px;
   height: 250px;
   width: 150px;
   position: absolute;
-  top: 250px;
+  top: 200px;
   left: 170px;
   z-index: 1;
   cursor: grab;
@@ -35,7 +35,7 @@ $margin-size: 7px;
 
   @include media('>500px') {
     left: 280px;
-    top: 250px
+    top: 120px
   }
 
   @include media('>600px') {

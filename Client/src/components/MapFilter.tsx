@@ -8,13 +8,16 @@ import SearchBar from './Searchbar';
 import "./css/mapfilter.scss";
 import { RenderLocations } from './RenderLocations';
 import Draggable from 'react-draggable'; // The default
-import { WindowContext } from '../contexts/windowSizeContext';
+import { WindowContext } from '../contexts/WindowSizeContext';
+import { DataContext } from '../contexts/DataContext';
+import { SearchInfoContext } from '../contexts/SearchInfoContext';
 
 
-
-export function MapFilter({ cities, countries, setCities, setCountries }: CitiesCountriesPropsInterface) {
+export function MapFilter() {
   /** Global States */
   const { windowObject, setWindowObject } = useContext(WindowContext);
+  const { data, setData } = useContext(DataContext);
+  const { searchInfo, setSearchInfo } = useContext(SearchInfoContext);
 
   /** PAGINATION STATES */
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -26,16 +29,24 @@ export function MapFilter({ cities, countries, setCities, setCountries }: Cities
   /** Logic to set inititial items per page based on the size of the current window */
   useEffect(() => {
     if (windowObject.width > 600) {
-      setItemsPerPage(6);
+      setItemsPerPage(5);
     } else {
       setItemsPerPage(4);
     }
   }, [windowObject]);
 
+  /**
+   * searchFiltered is an array that has been filtered by search term input by user
+   */
+  const searchFiltered = data.all_data.filter((datapoint) =>
+    datapoint.city_country.toLowerCase().includes(searchInfo.term.toLowerCase())
+  );
+
   /** Array that contains pages to be rendered based on length of data */
   type Page = number;
   const pages: Array<Page> = [];
-  for (let i = 1; i <= Math.ceil(cities.length / itemsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(searchInfo.term == "" ? data.priority_data.length / itemsPerPage :
+    searchFiltered.length / itemsPerPage); i++) {
     pages.push(i);
   }
 
@@ -46,7 +57,8 @@ export function MapFilter({ cities, countries, setCities, setCountries }: Cities
   */
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = cities.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = searchInfo.term == "" ? data.priority_data.slice(indexOfFirstItem, indexOfLastItem)
+    : searchFiltered.slice(indexOfFirstItem, indexOfLastItem);
 
   type RenderItems = (JSX.Element | null)[];
   /**
@@ -139,16 +151,16 @@ export function MapFilter({ cities, countries, setCities, setCountries }: Cities
 
 
   return (
-    <Draggable bounds="parent">
+    // <Draggable bounds="parent">
       <div className="map-filter-container">
-        <SearchBar {...{ cities, countries, setCities, setCountries }} />
+        <SearchBar setCurrentPage={setCurrentPage} />
         <div className="line"></div>
         <div className="recommended-cities">
           <div className='text-cities'>Recommended Cities</div>
           <RenderLocations locations={currentItems} />
 
           <div className="page-numbers">
-            <button className="prev-button" onClick={handlePrevBtn} disabled={currentPage == pages[0] ? true : false}>
+            <button className="prev-button" onClick={handlePrevBtn} disabled={(currentPage == pages[0] || pages.length == 0) ? true : false}>
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
                 <path d="M11.3691 5.5575L7.93414 9L11.3691 12.4425L10.3116 13.5L5.81164 9L10.3116 4.5L11.3691 5.5575Z" fill="#C4CDD5" />
               </svg>
@@ -158,7 +170,7 @@ export function MapFilter({ cities, countries, setCities, setCountries }: Cities
             {renderPageNumbers}
             {windowIncrementBtn}
 
-            <button className="next-button" onClick={handleNextBtn} disabled={currentPage == pages[pages.length - 1] ? true : false}>
+            <button className="next-button" onClick={handleNextBtn} disabled={(currentPage == pages[pages.length - 1] || pages.length == 0) ? true : false}>
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
                 <path d="M6.63086 5.5575L10.0659 9L6.63086 12.4425L7.68836 13.5L12.1884 9L7.68836 4.5L6.63086 5.5575Z" fill="#C4CDD5" />
               </svg>
@@ -167,6 +179,6 @@ export function MapFilter({ cities, countries, setCities, setCountries }: Cities
 
         </div>
       </div>
-    </Draggable>
+    // </Draggable>
   );
 }

@@ -6,14 +6,16 @@ import { useState, createContext, Dispatch, SetStateAction, useMemo, useEffect }
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { MapRoute } from './routes/MapRoute';
 import { AboutUs } from './routes/AboutUs';
-import { DataRoute } from './routes/DataRoute';
+import { LandingPage } from './routes/LandingPage';
 import NavBar from './components/Navbar';
 import SearchBar from './components/Searchbar';
 import { TakeAction } from './routes/TakeAction';
-import { SearchInfo, SearchInfoContext } from './contexts/searchInfoContext';
+import { SearchInfo, SearchInfoContext } from './contexts/SearchInfoContext';
 import { DataHandler, Country, City } from './model/DataHandler';
 import { WindowSize } from './model/interfaces';
-import { WindowContext } from './contexts/windowSizeContext';
+import { WindowContext } from './contexts/WindowSizeContext';
+import { Data, DataContext } from './contexts/DataContext';
+
 
 /* 
 Project Structure 
@@ -65,12 +67,20 @@ function App() {
   const dataHandler = useMemo(() => new DataHandler(), []);
 
   /**
-   * STATES
+   * GLOBAL STATES
    */
-  const [searchInfo, setSearchInfo] = useState<SearchInfo>({ term: "", byCity: true });
-  const [cities, setCities] = useState<Array<City>>(dataHandler.getCities());
-  const [countries, setCountries] = useState<Array<Country>>(dataHandler.getCountries());
   const [screenSize, setScreenSize] = useState(getCurrentDimension());
+  const [searchInfo, setSearchInfo] = useState<SearchInfo>({
+    term: "", zoom: 3, center: {
+      lat: 45.765001, lng: -76.001027
+    }
+  });
+  const [data, setData] = useState<Data>({
+    all_data: dataHandler.getData(),
+    city_countries: dataHandler.getCityCountries(),
+    priority_data: dataHandler.getPriorityData(),
+    priority_city_countries: dataHandler.getPriorityCityCountries()
+  });
 
   /**
    * @returns current size of app window  
@@ -90,7 +100,7 @@ function App() {
   /** appends event listener to window upon first render.
    * callback updateDimension gets invoked when the event is dispatched.
    * updateDimension updates screenSize state, causing a re-render and before appending a 
-   * new event listener, the old when gets removed due to the return function
+   * new event listener, the old event listener gets removed due 
   */
   useEffect(() => {
     window.addEventListener('resize', updateDimension);
@@ -102,24 +112,25 @@ function App() {
 
   return (
     <Router>
-      <div>
+      <div className="app-outer">
         <main>
-          <WindowContext.Provider value={{ windowObject: screenSize, setWindowObject: setScreenSize }}>
-            <SearchInfoContext.Provider value={{ searchInfo, setSearchInfo }}>
-              <NavBar />
-              <Routes>
-                <Route path="/" element={<MapRoute {...{ cities, countries, setCities, setCountries }} />}>
-                </Route>
-                <Route path="/data" element={<DataRoute />}>
-                </Route>
-                <Route path="/take-action" element={<TakeAction />}>
-                </Route>
-                <Route path="/about" element={<AboutUs />}>
-                </Route>
-              </Routes>
-              {/* <button onClick={() => sendAQI(55)}>1</button> */}
-            </SearchInfoContext.Provider>
-          </WindowContext.Provider>
+          <DataContext.Provider value={{ data, setData }}>
+            <WindowContext.Provider value={{ windowObject: screenSize, setWindowObject: setScreenSize }}>
+              <SearchInfoContext.Provider value={{ searchInfo, setSearchInfo }}>
+                <Routes>
+                  <Route path="/map-route" element={<MapRoute />}>
+                  </Route>
+                  <Route path="/" element={<LandingPage />}>
+                  </Route>
+                  <Route path="/take-action" element={<TakeAction />}>
+                  </Route>
+                  <Route path="/about" element={<AboutUs />}>
+                  </Route>
+                </Routes>
+                {/* <button onClick={() => sendAQI(55)}>1</button> */}
+              </SearchInfoContext.Provider>
+            </WindowContext.Provider>
+          </DataContext.Provider>
         </main>
       </div>
     </Router >
