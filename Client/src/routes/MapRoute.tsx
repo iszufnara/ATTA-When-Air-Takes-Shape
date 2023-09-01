@@ -1,13 +1,14 @@
 // import statements 
 import "./css/map.scss";
-import { useRef, useContext, useEffect, useState } from 'react';
+import { useRef, useContext, useEffect } from 'react';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 import { GoogleMap, useLoadScript, MarkerF, InfoWindowF, InfoWindow } from '@react-google-maps/api';
-import { Center, CitiesCountriesPropsInterface } from '../model/interfaces';
 import { MapFilter } from '../components/MapFilter';
 import { WindowContext } from '../contexts/WindowSizeContext';
 import { DataContext } from "../contexts/DataContext";
 import { SearchInfoContext } from "../contexts/SearchInfoContext";
+import { Datapoint } from "../model/DataHandler";
 
 // google maps API key
 const key = "AIzaSyCrqndBV56Fm8dTXCtAIPOyqYkqXQEDbKA";
@@ -24,6 +25,9 @@ export function MapRoute() {
 
 // renders GoogleMap and Markers
 function Map() {
+  /** navigate hook */
+  const navigate: NavigateFunction = useNavigate();
+
   /** STATES */
   const { data, setData } = useContext(DataContext);
   const { searchInfo, setSearchInfo } = useContext(SearchInfoContext);
@@ -52,14 +56,15 @@ function Map() {
 
   /**
    * 
-   * @param marker is id of Marker object that has been selected by user
-   * @returns immediately if selected marker is already the active marker 
+   * @param datapoint object 
+   * @returns immediately if selected marker is already the active marker, else it
+   * sets the searchInfo state to the properties of the datapoint selected by user
    */
-  const handleActiveMarker = (marker: number) => {
-    if (marker === searchInfo.activeMarker) {
+  const handleActiveMarker = (datapoint: Datapoint) => {
+    if (datapoint.uid === searchInfo.activeMarker) {
       return;
     }
-    setSearchInfo({ ...searchInfo, activeMarker: marker });
+    setSearchInfo({ ...searchInfo, zoom: 4, center: { lat: datapoint.lat, lng: datapoint.lon }, activeMarker: datapoint.uid });
   };
 
 
@@ -80,7 +85,7 @@ function Map() {
         {searchFiltered.map((datapoint) =>
           <MarkerF key={datapoint.uid}
             position={{ lat: datapoint.lat, lng: datapoint.lon }}
-            onClick={() => handleActiveMarker(datapoint.uid)}
+            onClick={() => handleActiveMarker(datapoint)}
           >
             {searchInfo.activeMarker === datapoint.uid ?
               <InfoWindowF
@@ -88,7 +93,9 @@ function Map() {
                 onCloseClick={() => setSearchInfo({ ...searchInfo, activeMarker: null })} >
                 <div>
                   <p>{datapoint.city_country}</p>
-                  <button>Select</button>
+                  <button onClick={() => {
+                    navigate("/info-page");
+                  }}>Select</button>
                 </div>
               </InfoWindowF> : null}
           </MarkerF>

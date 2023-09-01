@@ -5,7 +5,7 @@ import './styling/App.scss';
 import { useState, createContext, Dispatch, SetStateAction, useMemo, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { MapRoute } from './routes/MapRoute';
-import { AboutUs } from './routes/AboutUs';
+import { InfoPage } from './routes/InfoPage';
 import { LandingPage } from './routes/LandingPage';
 import NavBar from './components/Navbar';
 import SearchBar from './components/Searchbar';
@@ -127,7 +127,7 @@ function App() {
                   </Route>
                   <Route path="/take-action" element={<TakeAction />}>
                   </Route>
-                  <Route path="/about" element={<AboutUs />}>
+                  <Route path="/info-page" element={<InfoPage />}>
                   </Route>
                 </Routes>
                 {/* <button onClick={() => sendAQI(55)}>1</button> */}
