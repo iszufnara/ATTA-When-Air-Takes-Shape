@@ -28,7 +28,7 @@ var DataHandler = /** @class */ (function () {
                 uid: datapoint.uid,
                 lat: datapoint.lat,
                 lon: datapoint.lon,
-                aqi: datapoint.aqi,
+                aqi: Number(datapoint.aqi),
                 station: datapoint.station_name,
                 city: datapoint.city,
                 country: datapoint.country,

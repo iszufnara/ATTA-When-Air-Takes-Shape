@@ -94,6 +94,10 @@ function Map() {
                 <div>
                   <p>{datapoint.city_country}</p>
                   <button onClick={() => {
+                    setSearchInfo({
+                      term: "", zoom: 3,
+                      center: { lat: 45.765001, lng: -76.001027 }, activeMarker: null, datapoint: datapoint
+                    });
                     navigate("/info-page");
                   }}>Select</button>
                 </div>

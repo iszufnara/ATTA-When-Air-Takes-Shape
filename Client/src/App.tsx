@@ -76,7 +76,8 @@ function App() {
     center: {
       lat: 45.765001, lng: -76.001027
     },
-    activeMarker: null
+    activeMarker: null, 
+    datapoint: null
   });
   const [data, setData] = useState<Data>({
     all_data: dataHandler.getData(),
