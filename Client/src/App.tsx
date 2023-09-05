@@ -12,7 +12,7 @@ import {
 } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { MapRoute } from "./routes/MapRoute";
-import { AboutUs } from "./routes/AboutUs";
+import { InfoPage } from "./routes/InfoPage";
 import { LandingPage } from "./routes/LandingPage";
 import NavBar from "./components/Navbar";
 import SearchBar from "./components/Searchbar";
@@ -79,9 +79,10 @@ function App() {
     term: "",
     zoom: 3,
     center: {
-      lat: 45.765001,
-      lng: -76.001027,
+      lat: 45.765001, lng: -76.001027
     },
+    activeMarker: null, 
+    datapoint: null
   });
   const [data, setData] = useState<Data>({
     all_data: dataHandler.getData(),
@@ -133,7 +134,7 @@ function App() {
                   <Route path="/map-route" element={<MapRoute />}></Route>
                   <Route path="/" element={<LandingPage />}></Route>
                   <Route path="/intro" element={<Introduction />}></Route>
-                  <Route path="/about" element={<AboutUs />}></Route>
+                  <Route path="/info-page" element={<InfoPage />}></Route>
                 </Routes>
                 {/* <button onClick={() => sendAQI(55)}>1</button> */}
               </SearchInfoContext.Provider>

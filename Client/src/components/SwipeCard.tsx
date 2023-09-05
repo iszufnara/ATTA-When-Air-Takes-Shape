@@ -1,6 +1,6 @@
 import * as React from "react";
 import "./css/swipe.scss";
-import logo from "../assets/atta1_PNG.webp";
+import logo from "../assets/atta_logo.webp";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
