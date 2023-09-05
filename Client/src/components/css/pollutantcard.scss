@@ -1,0 +1,85 @@
+.pollutant-card-container {
+  border-radius: 20px;
+  background: var(--temp-text-background, #F9F9F9);
+  padding: 20px 20px;
+  margin: 15px;
+
+}
+
+.pollutant-card-top {
+  display: flex;
+  align-items: center;
+
+  img {
+    height: 28px;
+    margin-left: 40px;
+  }
+}
+
+.pollutant-card-name-and-unit {
+  display: flex;
+  // border: 1px solid blue;
+  align-items: center;
+  margin-right: 40px;
+
+
+  .pollutant-card-name {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 33px;
+    letter-spacing: 0.5px;
+    width: 50px;
+  }
+
+  .pollutant-card-unit {
+    color: #000;
+    text-align: right;
+    font-family: Montserrat;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    opacity: 0.8;
+    margin-left: 5px;
+  }
+}
+
+.pollutant-card-middle {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.pollutant-card-name-na {
+  color: rgba(0, 0, 0, 0.20);
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.pollutant-card-classification {
+
+  color: #000;
+  font-family: Montserrat;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.pollutant-card-bottom {
+  border-radius: 8px;
+  // background: var(--Good-AQI, #A8E05F);
+  height: 6px;
+  margin-top: 8px;
+}

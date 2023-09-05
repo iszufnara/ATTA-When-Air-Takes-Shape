@@ -24,7 +24,3 @@ export interface WindowSize {
   height: number;
 }
 
-export interface Center {
-  lat: number;
-  lng: number;
-}

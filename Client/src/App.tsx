@@ -1,21 +1,27 @@
-//styles import 
-import './styling/App.scss';
+//styles import
+import "./styling/App.scss";
 
 // Import statements
-import { useState, createContext, Dispatch, SetStateAction, useMemo, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { MapRoute } from './routes/MapRoute';
-import { AboutUs } from './routes/AboutUs';
-import { LandingPage } from './routes/LandingPage';
-import NavBar from './components/Navbar';
-import SearchBar from './components/Searchbar';
-import { TakeAction } from './routes/TakeAction';
-import { SearchInfo, SearchInfoContext } from './contexts/SearchInfoContext';
-import { DataHandler, Country, City } from './model/DataHandler';
-import { WindowSize } from './model/interfaces';
-import { WindowContext } from './contexts/WindowSizeContext';
-import { Data, DataContext } from './contexts/DataContext';
-
+import {
+  useState,
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useMemo,
+  useEffect,
+} from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { MapRoute } from "./routes/MapRoute";
+import { InfoPage } from "./routes/InfoPage";
+import { LandingPage } from "./routes/LandingPage";
+import NavBar from "./components/Navbar";
+import SearchBar from "./components/Searchbar";
+import { Introduction } from "./routes/Introduction";
+import { SearchInfo, SearchInfoContext } from "./contexts/SearchInfoContext";
+import { DataHandler, Country, City } from "./model/DataHandler";
+import { WindowSize } from "./model/interfaces";
+import { WindowContext } from "./contexts/WindowSizeContext";
+import { Data, DataContext } from "./contexts/DataContext";
 
 /* 
 Project Structure 
@@ -59,7 +65,6 @@ function App() {
   //   .then(res => res.json());
   // }
 
-
   /**
    * data handler, used to obtain data on cities and countries.
    * created using useMemo hook to only initialize it once on the first render of the app.
@@ -71,24 +76,28 @@ function App() {
    */
   const [screenSize, setScreenSize] = useState(getCurrentDimension());
   const [searchInfo, setSearchInfo] = useState<SearchInfo>({
-    term: "", zoom: 3, center: {
+    term: "",
+    zoom: 3,
+    center: {
       lat: 45.765001, lng: -76.001027
-    }
+    },
+    activeMarker: null, 
+    datapoint: null
   });
   const [data, setData] = useState<Data>({
     all_data: dataHandler.getData(),
     city_countries: dataHandler.getCityCountries(),
     priority_data: dataHandler.getPriorityData(),
-    priority_city_countries: dataHandler.getPriorityCityCountries()
+    priority_city_countries: dataHandler.getPriorityCityCountries(),
   });
 
   /**
-   * @returns current size of app window  
+   * @returns current size of app window
    */
   function getCurrentDimension(): WindowSize {
     return {
       width: window.innerWidth,
-      height: window.innerHeight
+      height: window.innerHeight,
     };
   }
 
@@ -99,33 +108,33 @@ function App() {
 
   /** appends event listener to window upon first render.
    * callback updateDimension gets invoked when the event is dispatched.
-   * updateDimension updates screenSize state, causing a re-render and before appending a 
-   * new event listener, the old event listener gets removed due 
-  */
+   * updateDimension updates screenSize state, causing a re-render and before appending a
+   * new event listener, the old event listener gets removed due
+   */
   useEffect(() => {
-    window.addEventListener('resize', updateDimension);
-    return (() => {
-      window.removeEventListener('resize', updateDimension);
-    });
+    window.addEventListener("resize", updateDimension);
+    return () => {
+      window.removeEventListener("resize", updateDimension);
+    };
   }, []);
-
 
   return (
     <Router>
       <div className="app-outer">
         <main>
           <DataContext.Provider value={{ data, setData }}>
-            <WindowContext.Provider value={{ windowObject: screenSize, setWindowObject: setScreenSize }}>
+            <WindowContext.Provider
+              value={{
+                windowObject: screenSize,
+                setWindowObject: setScreenSize,
+              }}
+            >
               <SearchInfoContext.Provider value={{ searchInfo, setSearchInfo }}>
                 <Routes>
-                  <Route path="/map-route" element={<MapRoute />}>
-                  </Route>
-                  <Route path="/" element={<LandingPage />}>
-                  </Route>
-                  <Route path="/take-action" element={<TakeAction />}>
-                  </Route>
-                  <Route path="/about" element={<AboutUs />}>
-                  </Route>
+                  <Route path="/map-route" element={<MapRoute />}></Route>
+                  <Route path="/" element={<LandingPage />}></Route>
+                  <Route path="/intro" element={<Introduction />}></Route>
+                  <Route path="/info-page" element={<InfoPage />}></Route>
                 </Routes>
                 {/* <button onClick={() => sendAQI(55)}>1</button> */}
               </SearchInfoContext.Provider>
@@ -133,7 +142,7 @@ function App() {
           </DataContext.Provider>
         </main>
       </div>
-    </Router >
+    </Router>
   );
 }
 
