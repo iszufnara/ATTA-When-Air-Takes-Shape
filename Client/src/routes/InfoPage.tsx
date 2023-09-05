@@ -86,7 +86,9 @@ export function InfoPage() {
           <PollutantSection />
           <div className="info-page-block-04">ImpactP</div>
           <div className="info-page-block-05">did u know</div>
-          <div className="info-page-block-06">breathe</div>
+          <div className="info-page-block-06">
+            <button>Breathe</button>
+          </div>
         </div>
 
       </div>
