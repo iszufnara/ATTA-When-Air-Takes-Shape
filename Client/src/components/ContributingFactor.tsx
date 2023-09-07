@@ -9,7 +9,6 @@ export interface ContributingFactorProps {
 export const ContributingFactor = (props: ContributingFactorProps) => {
   return (
     <div className="contributing-factor-container">
-
       <img src={props.img} />
       <p>{props.name}</p>
     </div>

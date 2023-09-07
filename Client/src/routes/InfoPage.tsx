@@ -15,6 +15,9 @@ import { useNavigate } from "react-router-dom";
 import { SearchInfoContext } from "../contexts/SearchInfoContext";
 import { Scale } from "../components/Scale";
 import { PollutantSection } from "../components/PollutantSection";
+import { HealthSection } from "../components/HealthSection";
+import { DidYouKnow } from "../components/DidYouKnow";
+import { BreathSection } from "../components/BreathSection";
 
 
 export function InfoPage() {
@@ -84,11 +87,12 @@ export function InfoPage() {
             </div>
           </div>
           <PollutantSection />
-          <div className="info-page-block-04">ImpactP</div>
-          <div className="info-page-block-05">did u know</div>
+          <HealthSection />
+          <DidYouKnow />
+          <BreathSection />
           <div className="info-page-block-06">
             <button>Breathe</button>
-          </div>
+            B</div>
         </div>
 
       </div>

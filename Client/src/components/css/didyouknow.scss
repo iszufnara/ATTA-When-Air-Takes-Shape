@@ -1,0 +1,46 @@
+.did-you-know-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 28px;
+  background: var(--atta-color-scheme-temp-secondary-color, rgba(154, 199, 217, 0.60));
+  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.30);
+  padding: 20px 10px;
+
+  a {
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: center;
+  }
+
+  a:link,
+  a:visited {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+.did-you-know-top {
+  font-family: Montserrat;
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 41px;
+  letter-spacing: 0.5px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.did-you-know-middle {
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 23px;
+  font-weight: 600;
+  line-height: 42px;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  padding: 0px 80px;
+}
