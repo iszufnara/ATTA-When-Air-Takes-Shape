@@ -28,7 +28,7 @@ export function MapFilter() {
 
   /** Logic to set inititial items per page based on the size of the current window */
   useEffect(() => {
-    if (windowObject.width > 600) {
+    if (windowObject.width > 900) {
       setItemsPerPage(5);
     } else {
       setItemsPerPage(4);

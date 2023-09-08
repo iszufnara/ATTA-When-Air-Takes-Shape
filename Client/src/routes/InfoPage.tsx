@@ -94,9 +94,6 @@ export function InfoPage() {
           <DidYouKnow />
           <BreathSection modal={modalIsActive} setModal={setModal} />
 
-          <div className="info-page-block-06">
-            <button>Breathe</button>
-            Bm</div>
         </div>
 
         {modalIsActive ?
@@ -116,7 +113,7 @@ export function InfoPage() {
             </div>
             <div className="info-page-modal-bottom">
               <button className="modal-cancel-button" onClick={() => setModal(false)}>Cancel</button>
-              <button className="modal-continue-button">Continue</button>
+              <button className="modal-continue-button" onClick={() => navigate("/breathe-page")}>Continue</button>
             </div>
           </div> : null}
 

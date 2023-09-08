@@ -22,6 +22,7 @@ import { DataHandler, Country, City } from "./model/DataHandler";
 import { WindowSize } from "./model/interfaces";
 import { WindowContext } from "./contexts/WindowSizeContext";
 import { Data, DataContext } from "./contexts/DataContext";
+import { BreatheRoute } from "./routes/BreatheRoute";
 
 /* 
 Project Structure 
@@ -81,7 +82,7 @@ function App() {
     center: {
       lat: 45.765001, lng: -76.001027
     },
-    activeMarker: null, 
+    activeMarker: null,
     datapoint: null
   });
   const [data, setData] = useState<Data>({
@@ -135,6 +136,7 @@ function App() {
                   <Route path="/" element={<LandingPage />}></Route>
                   <Route path="/intro" element={<Introduction />}></Route>
                   <Route path="/info-page" element={<InfoPage />}></Route>
+                  <Route path="/breathe-page" element={<BreatheRoute />}></Route>
                 </Routes>
                 {/* <button onClick={() => sendAQI(55)}>1</button> */}
               </SearchInfoContext.Provider>

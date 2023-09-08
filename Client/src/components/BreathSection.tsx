@@ -16,7 +16,10 @@ export const BreathSection = (props: BreatheSectionProps) => {
   return (
     <div className="breathe-section-container">
       <p className="breathe-section-top">What is it like to breathe in this city now?</p>
-      <button onClick={() => props.setModal(true)}>Breathe</button>
+      <button onClick={() => {
+        window.scrollTo(0, 0);
+        props.setModal(true);
+      }}>Breathe</button>
       <p className="breathe-section-bottom"
         onClick={() => {
           setSearchInfo({
