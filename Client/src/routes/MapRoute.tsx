@@ -47,6 +47,24 @@ function Map() {
   }, [windowObject]);
 
   /**
+   * on first render of MapRoute, sets properties of searchInfo to default properties,
+   * prevents user from navigating to info-page route without selecting a location
+   */
+  useEffect(() => {
+    setSearchInfo(
+      {
+        term: "",
+        zoom: 3,
+        center: {
+          lat: 45.765001, lng: -76.001027
+        },
+        activeMarker: null,
+        datapoint: null
+      }
+    );
+  }, []);
+
+  /**
    * searchFiltered is an array that has been filtered by search term input by user
    */
   const searchFiltered = searchInfo.term == "" ? data.priority_data.filter((datapoint) =>
@@ -80,7 +98,6 @@ function Map() {
           if (mapRef.current != null) {
             setSearchInfo({ ...searchInfo, zoom: mapRef.current.getZoom() });
           }
-          console.log(mapRef);
         }}>
         {searchFiltered.map((datapoint) =>
           <MarkerF key={datapoint.uid}

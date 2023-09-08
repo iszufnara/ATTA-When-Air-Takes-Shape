@@ -1,7 +1,11 @@
+@import "../../styling/breakpoints.scss";
+
 .info-page-container-outer {
   display: flex;
   flex-direction: column;
   font-family: Montserrat;
+  position: relative;
+
 }
 
 .info-page-header {
@@ -26,7 +30,6 @@
   align-items: center;
   justify-content: center;
   padding: 10px 5px;
-  // border: 1px solid red;
 
   img {
     height: 60px;
@@ -126,5 +129,116 @@
       letter-spacing: 1px;
       padding: 5px
     }
+  }
+}
+
+.info-page-modal {
+  position: absolute;
+  top: 60%;
+  left: 20%;
+  border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  border: 2px solid #000;
+  background: var(--atta-color-scheme-temp-tertiary-background, #F5FAFF);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+  @include media('>1025px') {
+    left: 30%;
+  }
+
+  @include media('>1400px') {
+    top: 50%;
+  }
+
+
+}
+
+.info-page-modal-top {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FE9B57;
+
+  padding: 5px;
+
+  img {
+    height: 70px;
+  }
+}
+
+.info-page-modal-middle {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 80px;
+
+  .p-01 {
+    font-family: Montserrat;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  .p-02 {
+    font-family: Montserrat;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 52px;
+    letter-spacing: 0.5px;
+  }
+
+  .p-03 {
+    font-family: Montserrat;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px;
+    margin: 5px 0px
+  }
+
+  .p-04 {
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: 0.5px;
+    margin-top: 10px;
+  }
+}
+
+.info-page-modal-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+
+  .modal-continue-button {
+    border-radius: 16px;
+    background: var(--TempPrimaryColor, #1E4359);
+    color: white;
+    padding: 16px 80px;
+    border: none;
+    font-size: 20px;
+
+  }
+
+  .modal-cancel-button {
+    border-radius: 16px;
+    background: white;
+    color: #616161;
+    padding: 16px 80px;
+    border: none;
+    font-size: 20px;
   }
 }

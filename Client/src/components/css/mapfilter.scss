@@ -34,33 +34,38 @@ $margin-size: 7px;
   }
 
   @include media('>500px') {
-    left: 280px;
-    top: 120px
+    // left: 280px;
+    top: 120px;
+    left: 60%;
   }
 
   @include media('>600px') {
-    left: 350px;
+    // left: 350px;
     width: 200px;
-    height: 360px
+    height: 360px;
+    left: 60%;
   }
 
   @include media('>700px') {
-    left: 450px;
+    // left: 450px;
+    left: 60%
   }
 
   @include media('>800px') {
-    left: 500px;
+    // left: 500px;
+    left: 60%;
     width: 250px;
   }
 
   @include media('>900px') {
-    left: 600px;
+    // left: 600px;
+    left: 60%
   }
 
   @include media('>1000px') {}
 
   @include media('>1200px') {
-    left: 900px;
+    left: 60%;
   }
 
 }

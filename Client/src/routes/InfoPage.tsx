@@ -7,10 +7,10 @@ import sad_face from "../assets/emoji_assets/sad_face.png";
 import info_icon from "../assets/info_icon.svg";
 import disappointed from "../assets/emoji_assets/disappointed.png";
 import dead_skin from "../assets/emoji_assets/dead-skin.png";
-
+import warning from "../assets/warning.svg";
 
 // libraries import 
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { SearchInfoContext } from "../contexts/SearchInfoContext";
 import { Scale } from "../components/Scale";
@@ -32,6 +32,9 @@ export function InfoPage() {
   const navigate = useNavigate();
   /** STATES */
   const { searchInfo, setSearchInfo } = useContext(SearchInfoContext);
+
+  // state used to determine if model over info page is active or not
+  const [modalIsActive, setModal] = useState<boolean>(false);
 
   /** on first render LOGIC */
   useEffect(() => {
@@ -69,7 +72,7 @@ export function InfoPage() {
           </div>
           <p>When Air Takes Shape</p>
         </div>
-        <div className="info-page-blocks">
+        <div className="info-page-blocks" style={{ opacity: modalIsActive ? 0.5 : 1 }}>
           <div className="info-page-block-01">{searchInfo.datapoint?.city_country}</div>
           <div className="info-page-block-02">
             <div className="info-page-block-02-section-01">{renderEmoji()}</div>
@@ -89,11 +92,33 @@ export function InfoPage() {
           <PollutantSection />
           <HealthSection />
           <DidYouKnow />
-          <BreathSection />
+          <BreathSection modal={modalIsActive} setModal={setModal} />
+
           <div className="info-page-block-06">
             <button>Breathe</button>
-            B</div>
+            Bm</div>
         </div>
+
+        {modalIsActive ?
+          <div className="info-page-modal">
+            <div className="info-page-modal-top" style={{ opacity: 1 }}>
+              <img src={warning} />
+            </div>
+            <div className="info-page-modal-middle">
+              <p className="p-01">You have selected</p>
+              <p className="p-02">{searchInfo.datapoint.city_country}</p>
+              <p className="p-03">for the structure to simulate breathing</p>
+              <p className="p-04">
+                Warning: By  continuing with your current selection, <br />
+                you will be unable to change it while the structure is <br />
+                in motion for approximately 1 minute
+              </p>
+            </div>
+            <div className="info-page-modal-bottom">
+              <button className="modal-cancel-button" onClick={() => setModal(false)}>Cancel</button>
+              <button className="modal-continue-button">Continue</button>
+            </div>
+          </div> : null}
 
       </div>
     );

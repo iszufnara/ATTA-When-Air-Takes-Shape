@@ -1,3 +1,56 @@
 .breathe-section-container {
-  border: 1px solid black;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 28px;
+  background: var(--atta-color-scheme-temp-text-background, #F9F9F9);
+  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.30);
+  padding: 30px;
+
+  button {
+    border-radius: 10px;
+    background: var(--TempPrimaryColor, #1E4359);
+    border: 3px solid transparent;
+    color: white;
+    font-weight: 600;
+    padding: 12px 50px;
+    font-family: Montserrat;
+    letter-spacing: 0.7;
+    margin-top: 20px;
+  }
+
+  button:hover {
+    cursor: pointer;
+    // border: 3px solid #1E4359;
+    // background-color: white;
+    // color: #1E4359
+  }
+}
+
+.breathe-section-top {
+  font-family: Montserrat;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 41px;
+  letter-spacing: 0.5px;
+}
+
+.breathe-section-bottom {
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+  /* 155.556% */
+  letter-spacing: 0.5px;
+  text-decoration-line: underline;
+  margin-top: 10px;
+}
+
+.breathe-section-bottom:hover {
+  cursor: pointer;
 }
