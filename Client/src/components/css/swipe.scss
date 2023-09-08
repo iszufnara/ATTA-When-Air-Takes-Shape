@@ -4,63 +4,9 @@ $swipe-breakpoint-one: ">480px";
 $swipe-breakpoint-two: ">520px";
 $swipe-breakpoint-four: ">630px";
 
-.swipe-container {
-  // border-radius: 16px;
-  background: var(--temp-tertiary-background, #f5faff);
-  // box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.20);
-  display: flex;
-  flex-direction: column;
-  // height: 230px;
-  // width: 400px;
-  // left: 100px;
-  // top: 400px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid black;
-  width: 100vw;
-  padding: 10px;
-
-  @include media(">760px") {
-    display: flex;
-  }
-
-  // @include media($swipe-breakpoint-one) {
-  //   top: 350px;
-  // }
-
-  // @include media($swipe-breakpoint-two) {
-  //   top: 320px;
-  // }
-
-  // @include media('>560px') {
-  //   top: 270px
-  // }
-
-  // @include media($swipe-breakpoint-four) {
-  //   left: 390px;
-  //   height: 350px;
-  //   top: 90px;
-  //   width: 240px;
-  // }
-
-  // @include media('>710px') {
-  //   padding: 20px;
-  //   top: 65px;
-  //   left: 380px;
-  //   width: 320px;
-  //   height: 380px;
-  // }
-
-  // @include media('>890px') {
-  //   left: 500px
-  // }
-
-  // @include media('>1024px') {
-  // }
-}
 .swipe {
-  width: 710px;
-  height: 634px;
+  width: 400px;
+  height: 400px;
   padding: 32px;
   background: var(--temp-text-background, #f9f9f9);
   box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
@@ -71,10 +17,19 @@ $swipe-breakpoint-four: ">630px";
   align-items: center;
   gap: 16px;
   display: inline-flex;
-  left: 608px;
-  top: 163px;
+  left: 500px;
+  top: 100px;
   position: absolute;
+
+  @include media(">1439px") {
+    left: 550px;
+    height: 500px;
+    width: 500px;
+    top: 100px
+  }
+
 }
+
 .swipe-upper {
   display: flex;
   flex-direction: column;
@@ -92,7 +47,8 @@ $swipe-breakpoint-four: ">630px";
   line-height: 64px;
   letter-spacing: 0.5px;
   word-wrap: break-word;
-  @include media(">630px") {
+
+  @include media(">14px") {
     font-size: 17px;
   }
 }
@@ -202,13 +158,16 @@ $swipe-breakpoint-four: ">630px";
       height: 24px;
       width: 24px;
       fill: white;
-      margin-right: 8px; /* Adjust the spacing as needed */
+      margin-right: 8px;
+      /* Adjust the spacing as needed */
     }
 
     p {
       color: white;
-      margin: 0; /* Reset margin for the `<p>` element */
-      display: inline; /* Add display: inline to ensure the `<p>` element stays on the same line */
+      margin: 0;
+      /* Reset margin for the `<p>` element */
+      display: inline;
+      /* Add display: inline to ensure the `<p>` element stays on the same line */
     }
 
     @media (min-width: 630px) {

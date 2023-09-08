@@ -4,11 +4,12 @@
 .landing-route-container {
   display: flex;
   height: 100vh;
-  background-color: var(--temp-tertiary-background, #F5FAFF);
+  width: 100vw;
+  // background-color: var(--temp-tertiary-background, #F5FAFF);
   position: relative;
 
   img {
-    object-fit: contain;
+    
   }
 
   @include media('>1024px') {}

@@ -28,7 +28,6 @@ export function SwipeCard(props: SwipeCardProps) {
   };
 
   return (
-    <div className="swipe-container">
       <div className="swipe">
         <div className="swipe-upper">
           <div className="swipe-header">When Air Takes Shape</div>
@@ -93,6 +92,5 @@ export function SwipeCard(props: SwipeCardProps) {
           </Slider>
         </div>
       </div>
-    </div>
   );
 }
