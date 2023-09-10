@@ -18,6 +18,7 @@ import { PollutantSection } from "../components/PollutantSection";
 import { HealthSection } from "../components/HealthSection";
 import { DidYouKnow } from "../components/DidYouKnow";
 import { BreathSection } from "../components/BreathSection";
+import axios from 'axios';
 
 
 export function InfoPage() {
@@ -60,6 +61,22 @@ export function InfoPage() {
       } else {
         return <img src={dead_skin} />;
       }
+    }
+  };
+
+  /**
+   * makes request to server API, sends value of chosen aqi and navigates to breathe page if request is succesful.
+   * alerts error message otherwise
+   */
+  const makeApiRequest = async () => {
+    try {
+      const res = await axios.post(`http://localhost:3000/aqi?value=${searchInfo.datapoint?.aqi}`);
+      console.log(res);
+      navigate("/breathe-page");
+    }
+    catch (error: any) {
+      alert(error.message);
+      console.error(error);
     }
   };
 
@@ -113,7 +130,9 @@ export function InfoPage() {
             </div>
             <div className="info-page-modal-bottom">
               <button className="modal-cancel-button" onClick={() => setModal(false)}>Cancel</button>
-              <button className="modal-continue-button" onClick={() => navigate("/breathe-page")}>Continue</button>
+              <button className="modal-continue-button" onClick={() => {
+                makeApiRequest();
+              }}>Continue</button>
             </div>
           </div> : null}
 

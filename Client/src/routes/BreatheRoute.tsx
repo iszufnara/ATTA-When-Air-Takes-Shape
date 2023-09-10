@@ -4,6 +4,7 @@ import breathe_gif from "../assets/breathe.gif";
 import { useEffect, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import { SearchInfoContext } from "../contexts/SearchInfoContext";
+import axios from "axios";
 
 export const BreatheRoute = () => {
   //navigation hook
@@ -14,10 +15,26 @@ export const BreatheRoute = () => {
   /** on first render LOGIC */
   useEffect(() => {
     if (searchInfo.datapoint == null) {
-      navigate("/map-route");
       alert("no location selected");
+      navigate("/map-route");
     }
   }, []);
+
+  /**
+   * makes post request to server API, sends query to stop installation,
+   * alerts error otherwise
+   */
+  const makeApiRequest = async () => {
+    try {
+      const res = await axios.post(`http://localhost:3000/command?value=s`);
+      console.log(res);
+      navigate("/map-route");
+    }
+    catch (error: any) {
+      alert(error.message);
+      console.error(error);
+    }
+  };
 
   return (
     <div className="breathe-route-container">
@@ -33,6 +50,12 @@ export const BreatheRoute = () => {
           activity.
         </p>
       </div>
+      <button
+        className="breathe-route-return-home"
+        onClick={() => {
+          makeApiRequest();
+        }}
+      >Return Home</button>
     </div>
   );
 };
