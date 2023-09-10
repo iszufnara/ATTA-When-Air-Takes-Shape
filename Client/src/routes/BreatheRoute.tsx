@@ -27,7 +27,8 @@ export const BreatheRoute = () => {
   const makeApiRequest = async () => {
     try {
       const res = await axios.post(`http://localhost:3000/command?value=s`);
-      console.log(res);
+      console.log(res)
+      alert(`request succesful: ` + res.status)
       navigate("/map-route");
     }
     catch (error: any) {

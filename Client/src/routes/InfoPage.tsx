@@ -72,6 +72,7 @@ export function InfoPage() {
     try {
       const res = await axios.post(`http://localhost:3000/aqi?value=${searchInfo.datapoint?.aqi}`);
       console.log(res);
+      alert(`request succesful: ` + res.status)
       navigate("/breathe-page");
     }
     catch (error: any) {
